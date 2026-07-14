@@ -11,6 +11,26 @@ import {
 import { notifyStockAlert, notifyWarning } from "./lib/notify.js";
 import { adapters } from "./sites/index.js";
 
+/** Does this error look like bot-blocking rather than a broken site/worker? */
+function looksBlocked(error) {
+    return (
+        error?.blocked === true ||
+        /captcha|bot wall|403|429|503/i.test(error?.message ?? "")
+    );
+}
+
+/**
+ * Notification failures (Telegram down, network blip) shouldn't abort
+ * the run mid-loop and lose the rest of the sites; log and move on.
+ */
+async function safeNotify(fn, ...args) {
+    try {
+        await fn(...args);
+    } catch (error) {
+        console.error(`notify failed: ${error.message}`);
+    }
+}
+
 async function run() {
     const config = await loadConfig();
     const state = await loadState();
@@ -26,11 +46,13 @@ async function run() {
     if (missing.length) console.log(`(adapters not implemented yet: ${missing.join(", ")})`);
 
     let alerts = 0;
+    const blockedSites = [];
 
     for (const key of active) {
         const adapter = adapters[key];
         const byId = new Map();
         let failures = 0;
+        let blocked = 0;
         let lastError = null;
 
         for (const query of config.search.queries) {
@@ -39,6 +61,7 @@ async function run() {
                 for (const r of results) byId.set(r.id, r);
             } catch (error) {
                 failures++;
+                if (looksBlocked(error)) blocked++;
                 lastError = error.message;
                 console.error(`[${key}] search "${query}" failed: ${error.message}`);
             }
@@ -46,8 +69,12 @@ async function run() {
 
         // A site "failed" this run only if every query threw.
         const siteOk = failures < config.search.queries.length;
+        if (!siteOk && blocked > 0) {
+            blockedSites.push(key);
+            lastError = `[likely bot-blocking] ${lastError}`;
+        }
         const warning = recordSiteResult(state, key, siteOk, lastError);
-        if (warning) await notifyWarning(warning, config);
+        if (warning) await safeNotify(notifyWarning, warning, config);
 
         const candidates = filterCandidates([...byId.values()], config).slice(
             0,
@@ -98,16 +125,28 @@ async function run() {
             const shouldAlert = recordAndDetectTransition(state, product, cooldown);
             if (shouldAlert) {
                 alerts++;
-                await notifyStockAlert(product, config, serviceability, verification);
+                await safeNotify(notifyStockAlert, product, config, serviceability, verification);
             }
         }
     }
 
     await saveState(state);
+
+    if (blockedSites.length) {
+        console.warn(
+            `\nLikely bot-blocking this run: ${blockedSites.join(", ")}. ` +
+                "Expected from datacenter IPs (GitHub Actions); the failure-streak " +
+                "warning in state.json fires if it persists. Not an infrastructure failure."
+        );
+    }
     console.log(`\nRun complete. ${alerts} alert(s) sent. State saved.`);
 }
 
+// Exit codes: blocked/flaky retailer sites are contained above and exit 0
+// (CI stays green; site health lives in state.json). Only real
+// infrastructure failures — unreadable config, state not writable,
+// crashes in the worker itself — reach this handler and exit 1.
 run().catch((error) => {
-    console.error("Worker failed:", error);
+    console.error("Worker failed (infrastructure):", error);
     process.exit(1);
 });

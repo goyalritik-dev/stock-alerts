@@ -33,7 +33,8 @@ Configuration is via `web/.env.local` (see `web/.env.example`):
 ## Status
 
 - [x] Config dashboard (frontend)
-- [ ] Worker: Search & Match engine + site adapters
-- [ ] Worker: pincode serviceability + Telegram/CallMeBot alerts
-- [ ] GitHub Actions workflow (5-min cron, state commit-back)
+- [x] Worker: Search & Match engine + site adapters (6 sites)
+- [x] Worker: pincode serviceability + Telegram/CallMeBot alerts
+- [x] Worker: bot-blocking resilience (UA rotation, retries with backoff, block-aware exit codes)
+- [x] GitHub Actions workflow (5-min cron, state commit-back, timeout + concurrency guards)
 - [ ] Vercel deployment guide
