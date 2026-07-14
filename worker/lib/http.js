@@ -58,7 +58,7 @@ function httpError(url, status) {
  * failures (timeouts, network errors, retryable statuses). Backoff is
  * exponential with jitter: ~1s, ~3s.
  */
-export async function get(url, { headers = {}, timeoutMs = 15000, retries = 2 } = {}) {
+export async function get(url, { headers = {}, timeoutMs = 12000, retries = 2 } = {}) {
     let lastError;
     for (let attempt = 0; attempt <= retries; attempt++) {
         if (attempt > 0) {

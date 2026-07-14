@@ -5,11 +5,6 @@ export type SiteKey =
     | "relianceDigital"
     | "vijaySales"
     | "shopatsc"
-    | "gamesTheShop"
-    | "tataCliq"
-    | "jiomart"
-    | "blinkit"
-    | "zepto"
     | "bigbasket";
 
 export const SITE_LABELS: Record<SiteKey, string> = {
@@ -19,11 +14,6 @@ export const SITE_LABELS: Record<SiteKey, string> = {
     relianceDigital: "Reliance Digital",
     vijaySales: "Vijay Sales",
     shopatsc: "Sony ShopAtSC",
-    gamesTheShop: "Games The Shop (coming soon)",
-    tataCliq: "Tata CLiQ (coming soon)",
-    jiomart: "JioMart (coming soon)",
-    blinkit: "Blinkit (coming soon)",
-    zepto: "Zepto (coming soon)",
     bigbasket: "BigBasket",
 };
 

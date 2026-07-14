@@ -17,11 +17,6 @@
         "relianceDigital": true,
         "vijaySales": true,
         "shopatsc": true,
-        "gamesTheShop": false,
-        "tataCliq": false,
-        "jiomart": false,
-        "blinkit": false,
-        "zepto": false,
         "bigbasket": true
     },
     "schedule": {

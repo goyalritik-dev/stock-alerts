@@ -427,11 +427,14 @@ export default function Dashboard() {
 }
 
 function Snapshot({ state }: { state: TrackerState }) {
+    const [expanded, setExpanded] = useState(false);
     const products = Object.entries(state.products ?? {}).sort(
         ([, a], [, b]) => Number(b.inStock) - Number(a.inStock)
     );
     const inStockCount = products.filter(([, p]) => p.inStock).length;
     const unhealthySites = Object.entries(state.sites ?? {}).filter(([, s]) => s.failures >= 3);
+    const COLLAPSED_LIMIT = 8;
+    const visible = expanded ? products : products.slice(0, COLLAPSED_LIMIT);
 
     return (
         <section className="mb-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6">
@@ -467,7 +470,7 @@ function Snapshot({ state }: { state: TrackerState }) {
             )}
 
             <ul className="mt-4 space-y-2">
-                {products.slice(0, 10).map(([key, p]) => (
+                {visible.map(([key, p]) => (
                     <li
                         key={key}
                         className="flex items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-2.5"
@@ -503,6 +506,16 @@ function Snapshot({ state }: { state: TrackerState }) {
                     </li>
                 )}
             </ul>
+            {products.length > COLLAPSED_LIMIT && (
+                <button
+                    onClick={() => setExpanded(!expanded)}
+                    className="mt-3 w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2 text-xs text-zinc-400 transition hover:bg-zinc-900 hover:text-zinc-200"
+                >
+                    {expanded
+                        ? "Show less"
+                        : `Show ${products.length - COLLAPSED_LIMIT} more product${products.length - COLLAPSED_LIMIT === 1 ? "" : "s"}`}
+                </button>
+            )}
         </section>
     );
 }
