@@ -1,36 +1,54 @@
 {
-    "search": {
-        "queries": ["ps5 console", "playstation 5 console"],
-        "includeKeywords": ["playstation 5|ps5", "console"],
-        "excludeKeywords": ["cover", "skin", "headset", "faceplate", "camera"],
-        "maxResultsPerSite": 5
-    },
-    "price": {
-        "min": 35000,
-        "max": 70000
-    },
-    "pincodes": ["110001"],
-    "sites": {
-        "amazon": true,
-        "flipkart": true,
-        "croma": true,
-        "relianceDigital": true,
-        "vijaySales": true,
-        "shopatsc": true,
-        "bigbasket": true,
-        "blinkit": true
-    },
-    "schedule": {
-        "intervalMinutes": 5,
-        "realertCooldownMinutes": 60,
-        "quietHours": {
-            "enabled": false,
-            "start": "00:00",
-            "end": "07:00"
-        }
-    },
-    "notifications": {
-        "telegram": { "enabled": true },
-        "whatsapp": { "enabled": false }
+  "search": {
+    "queries": [
+      "ps5 console",
+      "playstation 5 console"
+    ],
+    "includeKeywords": [
+      "playstation 5|ps5",
+      "console"
+    ],
+    "excludeKeywords": [
+      "cover",
+      "skin",
+      "headset",
+      "faceplate",
+      "camera"
+    ],
+    "maxResultsPerSite": 5
+  },
+  "price": {
+    "min": 35000,
+    "max": 70000
+  },
+  "pincodes": [
+    "400072"
+  ],
+  "sites": {
+    "amazon": true,
+    "flipkart": true,
+    "croma": true,
+    "relianceDigital": true,
+    "vijaySales": true,
+    "shopatsc": true,
+    "bigbasket": true,
+    "blinkit": true
+  },
+  "schedule": {
+    "intervalMinutes": 5,
+    "realertCooldownMinutes": 60,
+    "quietHours": {
+      "enabled": false,
+      "start": "00:00",
+      "end": "07:00"
     }
+  },
+  "notifications": {
+    "telegram": {
+      "enabled": true
+    },
+    "whatsapp": {
+      "enabled": false
+    }
+  }
 }
