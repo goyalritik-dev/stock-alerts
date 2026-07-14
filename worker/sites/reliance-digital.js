@@ -144,10 +144,10 @@ export default {
             .filter((i) => /playstation|ps5/i.test(i.name))
             .slice(0, MAX_DETAIL_FETCHES);
 
-        const results = [];
-        for (const item of relevant) {
-            const id = item.url.split("?")[0].split("/").filter(Boolean).pop();
-            try {
+        // Fetch product pages in parallel for speed
+        const detailResults = await Promise.allSettled(
+            relevant.map(async (item) => {
+                const id = item.url.split("?")[0].split("/").filter(Boolean).pop();
                 const productHtml = await getText(item.url);
                 let price = null;
                 let inStock = false;
@@ -161,7 +161,7 @@ export default {
                         inStock = /InStock/i.test(String(offers.availability ?? ""));
                     }
                 }
-                results.push({
+                return {
                     site: this.key,
                     siteLabel: this.label,
                     id,
@@ -169,9 +169,16 @@ export default {
                     url: item.url,
                     price,
                     inStock,
-                });
-            } catch (error) {
-                console.error(`[relianceDigital] detail fetch failed for ${id}: ${error.message}`);
+                };
+            })
+        );
+
+        const results = [];
+        for (const r of detailResults) {
+            if (r.status === "fulfilled") {
+                results.push(r.value);
+            } else {
+                console.error(`[relianceDigital] detail fetch failed: ${r.reason.message}`);
             }
         }
         return results;

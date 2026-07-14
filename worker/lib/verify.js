@@ -9,12 +9,19 @@
  *   none  — site has no deeper signal; alert is marked unverified
  */
 
+const VERIFY_TIMEOUT_MS = 20000;
+
 export async function verifyBuyable(adapter, product, pincodes) {
     if (typeof adapter.verify !== "function") {
         return { level: "none", buyable: true, reason: "no verifier for site" };
     }
     try {
-        const result = await adapter.verify(product, pincodes);
+        const result = await Promise.race([
+            adapter.verify(product, pincodes),
+            new Promise((_, reject) =>
+                setTimeout(() => reject(new Error("verification timed out")), VERIFY_TIMEOUT_MS)
+            ),
+        ]);
         return {
             level: result.level ?? "page",
             buyable: result.buyable === true,

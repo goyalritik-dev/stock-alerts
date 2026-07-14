@@ -97,16 +97,15 @@ export default {
     },
 
 
-    /** Per-pincode serviceability via the same page-fetch API. */
+    /** Per-pincode serviceability via the same page-fetch API — runs in parallel. */
     async checkPincodes(product, pincodes) {
+        const results = await Promise.allSettled(
+            pincodes.map((pin) => this.verify(product, [pin]))
+        );
         const map = {};
-        for (const pin of pincodes) {
-            try {
-                const result = await this.verify(product, [pin]);
-                map[pin] = result.buyable;
-            } catch {
-                map[pin] = null;
-            }
+        for (let i = 0; i < pincodes.length; i++) {
+            const r = results[i];
+            map[pincodes[i]] = r.status === "fulfilled" ? r.value.buyable : null;
         }
         return map;
     },

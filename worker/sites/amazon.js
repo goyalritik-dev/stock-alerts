@@ -14,8 +14,8 @@ export default {
 
     /**
      * PDP check: requires the actual add-to-cart/buy-now buttons and no
-     * "Currently unavailable" box. Search tiles often show stale prices
-     * for delisted consoles.
+     * "Currently unavailable" box. Also checks the #availability span
+     * for explicit stock status text.
      */
     async verify(product) {
         const html = await getText(product.url, {
@@ -27,14 +27,52 @@ export default {
         const hasAddToCart = /id="add-to-cart-button"/.test(html);
         const hasBuyNow = /id="buy-now-button"/.test(html);
         const unavailable = /currently unavailable|out of stock/i.test(html);
-        const buyable = (hasAddToCart || hasBuyNow) && !unavailable;
+        const tempUnavailable = /temporarily out of stock/i.test(html);
+        const buyable = (hasAddToCart || hasBuyNow) && !unavailable && !tempUnavailable;
         return {
             level: "page",
             buyable,
             reason: buyable
                 ? "PDP has cart/buy buttons"
-                : `addToCart=${hasAddToCart} buyNow=${hasBuyNow} unavailable=${unavailable}`,
+                : `addToCart=${hasAddToCart} buyNow=${hasBuyNow} unavailable=${unavailable} tempUnavail=${tempUnavailable}`,
         };
+    },
+
+    /**
+     * Pincode serviceability — fetches the PDP with a delivery-location
+     * cookie/header and checks whether Amazon shows a delivery promise
+     * or "Currently unavailable" for that pincode. Amazon's "Deliver to"
+     * widget is driven by cookies; we pass the pincode via the
+     * `x-main` / delivery address mechanism.
+     */
+    async checkPincodes(product, pincodes) {
+        const map = {};
+        for (const pin of pincodes) {
+            try {
+                // Amazon uses the &psc=1 param and pincode cookies for delivery checks.
+                // We'll fetch the PDP and check if it shows delivery info vs unavailable.
+                const html = await getText(product.url, {
+                    headers: {
+                        "Upgrade-Insecure-Requests": "1",
+                        Cookie: `session-token=dummy; ubid-acbin=dummy; x-acbin="${pin}"`,
+                    },
+                });
+                if (html.includes("api-services-support@amazon.com")) {
+                    map[pin] = null; // CAPTCHA — can't determine
+                    continue;
+                }
+                // Look for delivery-related indicators
+                const hasDeliveryPromise = /deliver(y|ed|ing)\s+(to|by)/i.test(html);
+                const unavailable = /currently unavailable|out of stock|temporarily out of stock/i.test(html);
+                const hasAddToCart = /id="add-to-cart-button"/.test(html);
+
+                // If the product has add-to-cart and delivery info, it's serviceable
+                map[pin] = hasAddToCart && !unavailable && hasDeliveryPromise;
+            } catch {
+                map[pin] = null;
+            }
+        }
+        return map;
     },
 
     async search(query) {

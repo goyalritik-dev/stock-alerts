@@ -9,6 +9,21 @@ import { getJson } from "../lib/http.js";
  */
 const API = "https://api.croma.com/searchservices/v1/search";
 const BASE = "https://www.croma.com";
+const DELIVERY_API = "https://api.croma.com/product/allchannels/v1/pdp/deliveryoption";
+
+/**
+ * Check deliverability for a single pincode using Croma's delivery API.
+ */
+async function checkDelivery(productCode, pincode) {
+    const delivery = await getJson(
+        `${DELIVERY_API}?productCode=${productCode}&pincode=${pincode}`,
+        { headers: { Origin: BASE, Referer: `${BASE}/` } }
+    );
+    return (
+        delivery.stockAvailable === true &&
+        (delivery.homeDeliveryFlag === true || delivery.storePickupFlag === true)
+    );
+}
 
 export default {
     key: "croma",
@@ -23,18 +38,12 @@ export default {
      */
     async verify(product, pincodes = []) {
         const pin = pincodes[0] ?? "110001";
-        const delivery = await getJson(
-            `https://api.croma.com/product/allchannels/v1/pdp/deliveryoption?productCode=${product.id}&pincode=${pin}`,
-            { headers: { Origin: BASE, Referer: `${BASE}/` } }
-        );
-        const deliverable =
-            delivery.stockAvailable === true &&
-            (delivery.homeDeliveryFlag === true || delivery.storePickupFlag === true);
+        const deliverable = await checkDelivery(product.id, pin);
         if (!deliverable) {
             return {
                 level: "page",
                 buyable: false,
-                reason: `deliveryoption says stockAvailable=${delivery.stockAvailable}`,
+                reason: `deliveryoption says not deliverable to ${pin}`,
             };
         }
 
@@ -50,6 +59,22 @@ export default {
                 ? "deliverable + PDP schema InStock"
                 : `PDP schema availability inStock=${inStockLd} outOfStock=${outOfStockLd}`,
         };
+    },
+
+    /**
+     * Per-pincode serviceability using Croma's delivery option API.
+     * Checks each configured pincode in parallel.
+     */
+    async checkPincodes(product, pincodes) {
+        const results = await Promise.allSettled(
+            pincodes.map((pin) => checkDelivery(product.id, pin))
+        );
+        const map = {};
+        for (let i = 0; i < pincodes.length; i++) {
+            const r = results[i];
+            map[pincodes[i]] = r.status === "fulfilled" ? r.value : null;
+        }
+        return map;
     },
 
     async search(query) {

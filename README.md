@@ -37,4 +37,4 @@ Configuration is via `web/.env.local` (see `web/.env.example`):
 - [x] Worker: pincode serviceability + Telegram/CallMeBot alerts
 - [x] Worker: bot-blocking resilience (UA rotation, retries with backoff, block-aware exit codes)
 - [x] GitHub Actions workflow (5-min cron, state commit-back, timeout + concurrency guards)
-- [ ] Vercel deployment guide
+- [x] [Vercel deployment guide](DEPLOYMENT.md)

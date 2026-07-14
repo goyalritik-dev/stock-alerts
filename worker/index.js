@@ -31,6 +31,121 @@ async function safeNotify(fn, ...args) {
     }
 }
 
+/**
+ * Concurrency limiter — runs async tasks with at most `limit` in flight.
+ * Returns results in the same order as the input array.
+ */
+async function pMap(items, fn, limit = 2) {
+    const results = new Array(items.length);
+    let idx = 0;
+
+    async function worker() {
+        while (idx < items.length) {
+            const i = idx++;
+            results[i] = await fn(items[i], i);
+        }
+    }
+
+    await Promise.all(Array.from({ length: Math.min(limit, items.length) }, () => worker()));
+    return results;
+}
+
+/**
+ * Process a single site: run all search queries in parallel, filter,
+ * verify, and check pincode serviceability.
+ */
+async function processSite(key, adapter, config, state, cooldown) {
+    const byId = new Map();
+    let failures = 0;
+    let blocked = 0;
+    let lastError = null;
+
+    // Run all search queries in parallel for this site
+    const queryResults = await Promise.allSettled(
+        config.search.queries.map((query) =>
+            adapter.search(query, { pincodes: config.pincodes })
+        )
+    );
+
+    for (let i = 0; i < queryResults.length; i++) {
+        const result = queryResults[i];
+        if (result.status === "fulfilled") {
+            for (const r of result.value) byId.set(r.id, r);
+        } else {
+            failures++;
+            if (looksBlocked(result.reason)) blocked++;
+            lastError = result.reason.message;
+            console.error(`[${key}] search "${config.search.queries[i]}" failed: ${lastError}`);
+        }
+    }
+
+    // A site "failed" this run only if every query threw.
+    const siteOk = failures < config.search.queries.length;
+    const isBlocked = !siteOk && blocked > 0;
+    if (isBlocked) {
+        lastError = `[likely bot-blocking] ${lastError}`;
+    }
+    const warning = recordSiteResult(state, key, siteOk, lastError);
+    if (warning) await safeNotify(notifyWarning, warning, config);
+
+    const candidates = filterCandidates([...byId.values()], config).slice(
+        0,
+        config.search.maxResultsPerSite
+    );
+    console.log(
+        `[${key}] ${byId.size} raw result(s), ${candidates.length} matching candidate(s)`
+    );
+
+    let alerts = 0;
+
+    for (const product of candidates) {
+        console.log(
+            `  - ${product.title} | ₹${product.price ?? "?"} | ${product.inStock ? "IN STOCK" : "out of stock"}`
+        );
+
+        // Gate 1 — deep verification: search indexes lie, so anything that
+        // looks in stock must pass the product-page / cart check.
+        let verification = null;
+        if (product.inStock) {
+            verification = await verifyBuyable(adapter, product, config.pincodes);
+            if (!verification.buyable) {
+                console.log(
+                    `    (failed ${verification.level} verification: ${verification.reason} — no alert)`
+                );
+                product.inStock = false;
+            } else {
+                console.log(
+                    `    (verified [${verification.level}]: ${verification.reason})`
+                );
+            }
+        }
+
+        // Gate 2 — pincode serviceability.
+        let serviceability = null;
+        if (product.inStock) {
+            serviceability = await checkServiceability(
+                adapter,
+                product,
+                config.pincodes
+            );
+            if (serviceability.supported && serviceability.serviceable.length === 0) {
+                console.log(
+                    `    (in stock but not deliverable to ${config.pincodes.join(", ")} — no alert)`
+                );
+                product.inStock = false; // treat as unavailable *for the user*
+            }
+        }
+
+        const shouldAlert = recordAndDetectTransition(state, product, cooldown);
+        if (shouldAlert) {
+            alerts++;
+            await safeNotify(notifyStockAlert, product, config, serviceability, verification);
+        }
+    }
+
+    return { alerts, isBlocked };
+}
+
 async function run() {
     const config = await loadConfig();
     const state = await loadState();
@@ -45,89 +160,30 @@ async function run() {
     console.log(`Sites: ${active.join(", ") || "(none)"}`);
     if (missing.length) console.log(`(adapters not implemented yet: ${missing.join(", ")})`);
 
-    let alerts = 0;
+    let totalAlerts = 0;
     const blockedSites = [];
 
-    for (const key of active) {
-        const adapter = adapters[key];
-        const byId = new Map();
-        let failures = 0;
-        let blocked = 0;
-        let lastError = null;
-
-        for (const query of config.search.queries) {
+    // Process sites with controlled concurrency (2 at a time).
+    // This cuts total runtime ~3-4× without overwhelming retailers.
+    const siteResults = await pMap(
+        active,
+        async (key) => {
+            const adapter = adapters[key];
             try {
-                const results = await adapter.search(query, { pincodes: config.pincodes });
-                for (const r of results) byId.set(r.id, r);
+                return await processSite(key, adapter, config, state, cooldown);
             } catch (error) {
-                failures++;
-                if (looksBlocked(error)) blocked++;
-                lastError = error.message;
-                console.error(`[${key}] search "${query}" failed: ${error.message}`);
+                console.error(`[${key}] site processing failed: ${error.message}`);
+                recordSiteResult(state, key, false, error.message);
+                return { alerts: 0, isBlocked: false };
             }
-        }
+        },
+        2 // concurrency limit
+    );
 
-        // A site "failed" this run only if every query threw.
-        const siteOk = failures < config.search.queries.length;
-        if (!siteOk && blocked > 0) {
-            blockedSites.push(key);
-            lastError = `[likely bot-blocking] ${lastError}`;
-        }
-        const warning = recordSiteResult(state, key, siteOk, lastError);
-        if (warning) await safeNotify(notifyWarning, warning, config);
-
-        const candidates = filterCandidates([...byId.values()], config).slice(
-            0,
-            config.search.maxResultsPerSite
-        );
-        console.log(
-            `[${key}] ${byId.size} raw result(s), ${candidates.length} matching candidate(s)`
-        );
-
-        for (const product of candidates) {
-            console.log(
-                `  - ${product.title} | ₹${product.price ?? "?"} | ${product.inStock ? "IN STOCK" : "out of stock"}`
-            );
-
-            // Gate 1 — deep verification: search indexes lie, so anything that
-            // looks in stock must pass the product-page / cart check.
-            let verification = null;
-            if (product.inStock) {
-                verification = await verifyBuyable(adapter, product, config.pincodes);
-                if (!verification.buyable) {
-                    console.log(
-                        `    (failed ${verification.level} verification: ${verification.reason} — no alert)`
-                    );
-                    product.inStock = false;
-                } else {
-                    console.log(
-                        `    (verified [${verification.level}]: ${verification.reason})`
-                    );
-                }
-            }
-
-            // Gate 2 — pincode serviceability.
-            let serviceability = null;
-            if (product.inStock) {
-                serviceability = await checkServiceability(
-                    adapter,
-                    product,
-                    config.pincodes
-                );
-                if (serviceability.supported && serviceability.serviceable.length === 0) {
-                    console.log(
-                        `    (in stock but not deliverable to ${config.pincodes.join(", ")} — no alert)`
-                    );
-                    product.inStock = false; // treat as unavailable *for the user*
-                }
-            }
-
-            const shouldAlert = recordAndDetectTransition(state, product, cooldown);
-            if (shouldAlert) {
-                alerts++;
-                await safeNotify(notifyStockAlert, product, config, serviceability, verification);
-            }
-        }
+    for (let i = 0; i < active.length; i++) {
+        const { alerts, isBlocked } = siteResults[i];
+        totalAlerts += alerts;
+        if (isBlocked) blockedSites.push(active[i]);
     }
 
     await saveState(state);
@@ -139,7 +195,7 @@ async function run() {
             "warning in state.json fires if it persists. Not an infrastructure failure."
         );
     }
-    console.log(`\nRun complete. ${alerts} alert(s) sent. State saved.`);
+    console.log(`\nRun complete. ${totalAlerts} alert(s) sent. State saved.`);
 }
 
 // Exit codes: blocked/flaky retailer sites are contained above and exit 0
