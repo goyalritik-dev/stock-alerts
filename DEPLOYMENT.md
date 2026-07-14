@@ -33,10 +33,29 @@ The `web/` directory contains a Next.js application that serves as your configur
 
 The background worker runs automatically every 5 minutes (or as configured) via the workflow defined in `.github/workflows/stock-check.yml`.
 
-To receive alerts, you must configure the notification secrets in your repository settings:
+To receive alerts, you must configure your repository secrets:
 
 1. Go to your GitHub repository -> **Settings** -> **Secrets and variables** -> **Actions** -> **Repository Secrets**.
-2. Add the following secrets:
+2. Add your secrets (Telegram, WhatsApp, etc.).
+
+### ⚠️ Note on GitHub Actions Cron Schedules
+GitHub Actions `schedule` cron jobs are **best-effort and run on a shared queue**. A schedule set for every 5 minutes (`*/5 * * * *`) will often experience delays of 10 to 45 minutes (or more) depending on GitHub's load.
+
+If you need **guaranteed, precise 5-minute runs**, use a free external trigger service:
+1. Create a free account on [cron-job.org](https://cron-job.org/).
+2. Create a new cron job with the following configuration:
+   - **Title**: PS5 Stock Check
+   - **URL**: `https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/actions/workflows/stock-check.yml/dispatches`
+   - **Schedule**: Every 5 minutes
+   - **Request Method**: `POST`
+   - **Request Headers**:
+     - `Authorization`: `Bearer YOUR_GITHUB_TOKEN` (Use the same Fine-grained PAT created for Vercel)
+     - `Accept`: `application/vnd.github+json`
+     - `X-GitHub-Api-Version`: `2022-11-28`
+     - `User-Agent`: `CronJob-Client`
+   - **Request Body (raw JSON)**: `{"ref": "main"}`
+
+This will trigger the workflow precisely every 5 minutes using the GitHub Actions API.
 
 ### For Telegram Notifications (Recommended)
 1. **Create a Telegram Bot**:

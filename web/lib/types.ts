@@ -5,7 +5,8 @@ export type SiteKey =
     | "relianceDigital"
     | "vijaySales"
     | "shopatsc"
-    | "bigbasket";
+    | "bigbasket"
+    | "blinkit";
 
 export const SITE_LABELS: Record<SiteKey, string> = {
     amazon: "Amazon.in",
@@ -15,6 +16,7 @@ export const SITE_LABELS: Record<SiteKey, string> = {
     vijaySales: "Vijay Sales",
     shopatsc: "Sony ShopAtSC",
     bigbasket: "BigBasket",
+    blinkit: "Blinkit",
 };
 
 export interface TrackerConfig {

@@ -1,5 +1,6 @@
 import amazon from "./amazon.js";
 import bigbasket from "./bigbasket.js";
+import blinkit from "./blinkit.js";
 import croma from "./croma.js";
 import flipkart from "./flipkart.js";
 import relianceDigital from "./reliance-digital.js";
@@ -10,6 +11,7 @@ import vijaySales from "./vijay-sales.js";
 export const adapters = {
     amazon,
     bigbasket,
+    blinkit,
     croma,
     flipkart,
     relianceDigital,

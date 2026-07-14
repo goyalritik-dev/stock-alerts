@@ -17,7 +17,8 @@
         "relianceDigital": true,
         "vijaySales": true,
         "shopatsc": true,
-        "bigbasket": true
+        "bigbasket": true,
+        "blinkit": true
     },
     "schedule": {
         "intervalMinutes": 5,
