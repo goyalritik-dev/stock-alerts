@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Field, NumberInput, Section, TagInput, Toggle } from "@/components/ui";
-import { SITE_LABELS, type SiteKey, type TrackerConfig } from "@/lib/types";
+import { SITE_LABELS, type SiteKey, type TrackerConfig, type TrackerState } from "@/lib/types";
 
 type LoadState =
     | { status: "loading" }
@@ -17,6 +17,7 @@ export default function Dashboard() {
     const [storage, setStorage] = useState<"github" | "local">("local");
     const [saving, setSaving] = useState(false);
     const [saveMessage, setSaveMessage] = useState<string | null>(null);
+    const [trackerState, setTrackerState] = useState<TrackerState | null>(null);
 
     const fetchConfig = useCallback(async () => {
         setLoad({ status: "loading" });
@@ -41,6 +42,12 @@ export default function Dashboard() {
         setSavedSnapshot(JSON.stringify(body.config));
         setStorage(body.storage);
         setLoad({ status: "ready" });
+
+        // Stock snapshot is non-critical; load it after the config
+        void fetch("/api/state")
+            .then((r) => (r.ok ? r.json() : null))
+            .then((b) => setTrackerState(b?.state ?? null))
+            .catch(() => setTrackerState(null));
     }, []);
 
     useEffect(() => {
@@ -140,6 +147,8 @@ export default function Dashboard() {
                     {saveMessage}
                 </p>
             )}
+
+            {trackerState && <Snapshot state={trackerState} />}
 
             <div className="grid gap-6 lg:grid-cols-2">
                 <Section
@@ -293,6 +302,22 @@ export default function Dashboard() {
                                 }
                             />
                         </Field>
+                        <Field
+                            label="Re-alert cooldown (minutes)"
+                            hint="Minimum gap before the same product can alert again (stops flapping stock from spamming you)."
+                        >
+                            <NumberInput
+                                value={config.schedule.realertCooldownMinutes ?? 60}
+                                min={0}
+                                max={1440}
+                                onChange={(realertCooldownMinutes) =>
+                                    setConfig({
+                                        ...config,
+                                        schedule: { ...config.schedule, realertCooldownMinutes },
+                                    })
+                                }
+                            />
+                        </Field>
                         <div className="flex items-center justify-between">
                             <span className="text-sm text-zinc-300">Quiet hours</span>
                             <Toggle
@@ -398,6 +423,87 @@ export default function Dashboard() {
                 </div>
             </div>
         </Shell>
+    );
+}
+
+function Snapshot({ state }: { state: TrackerState }) {
+    const products = Object.entries(state.products ?? {}).sort(
+        ([, a], [, b]) => Number(b.inStock) - Number(a.inStock)
+    );
+    const inStockCount = products.filter(([, p]) => p.inStock).length;
+    const unhealthySites = Object.entries(state.sites ?? {}).filter(([, s]) => s.failures >= 3);
+
+    return (
+        <section className="mb-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-base font-semibold text-zinc-100">
+                    Stock snapshot
+                    <span
+                        className={`ml-3 rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                            inStockCount > 0
+                                ? "bg-emerald-500/15 text-emerald-300"
+                                : "bg-zinc-800 text-zinc-400"
+                        }`}
+                    >
+                        {inStockCount} in stock
+                    </span>
+                </h2>
+                {state.lastRunAt && (
+                    <span className="text-xs text-zinc-500">
+                        last run {new Date(state.lastRunAt).toLocaleString("en-IN")}
+                    </span>
+                )}
+            </div>
+
+            {unhealthySites.length > 0 && (
+                <div className="mt-3 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-xs text-amber-300">
+                    {unhealthySites.map(([key, s]) => (
+                        <p key={key}>
+                            {key}: {s.failures} consecutive failures
+                            {s.lastError ? ` — ${s.lastError}` : ""}
+                        </p>
+                    ))}
+                </div>
+            )}
+
+            <ul className="mt-4 space-y-2">
+                {products.slice(0, 10).map(([key, p]) => (
+                    <li
+                        key={key}
+                        className="flex items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-2.5"
+                    >
+                        <div className="min-w-0">
+                            <a
+                                href={p.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="block truncate text-sm text-zinc-200 hover:text-indigo-300"
+                            >
+                                {p.title}
+                            </a>
+                            <span className="text-xs text-zinc-500">
+                                {key.split(":")[0]}
+                                {p.price ? ` · ₹${p.price.toLocaleString("en-IN")}` : ""}
+                            </span>
+                        </div>
+                        <span
+                            className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                                p.inStock
+                                    ? "bg-emerald-500/15 text-emerald-300"
+                                    : "bg-zinc-800 text-zinc-500"
+                            }`}
+                        >
+                            {p.inStock ? "In stock" : "Out of stock"}
+                        </span>
+                    </li>
+                ))}
+                {products.length === 0 && (
+                    <li className="text-sm text-zinc-500">
+                        No products tracked yet — the worker hasn&apos;t run.
+                    </li>
+                )}
+            </ul>
+        </section>
     );
 }
 

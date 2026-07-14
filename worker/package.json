@@ -1,0 +1,15 @@
+{
+    "name": "stock-alert-worker",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "engines": {
+        "node": ">=20"
+    },
+    "scripts": {
+        "check": "node index.js"
+    },
+    "dependencies": {
+        "cheerio": "^1.0.0"
+    }
+}

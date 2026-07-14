@@ -2,19 +2,7 @@
     "search": {
         "queries": ["ps5 console", "playstation 5 console"],
         "includeKeywords": ["playstation 5|ps5", "console"],
-        "excludeKeywords": [
-            "controller",
-            "cover",
-            "game",
-            "skin",
-            "headset",
-            "charging",
-            "stand",
-            "camera",
-            "remote",
-            "faceplate",
-            "dualsense"
-        ],
+        "excludeKeywords": ["cover", "skin", "headset", "faceplate", "camera"],
         "maxResultsPerSite": 5
     },
     "price": {
@@ -29,14 +17,16 @@
         "relianceDigital": true,
         "vijaySales": true,
         "shopatsc": true,
-        "gamesTheShop": true,
-        "tataCliq": true,
-        "jiomart": true,
-        "poorvika": true,
-        "sangeetha": true
+        "gamesTheShop": false,
+        "tataCliq": false,
+        "jiomart": false,
+        "blinkit": false,
+        "zepto": false,
+        "bigbasket": false
     },
     "schedule": {
         "intervalMinutes": 5,
+        "realertCooldownMinutes": 60,
         "quietHours": {
             "enabled": false,
             "start": "00:00",

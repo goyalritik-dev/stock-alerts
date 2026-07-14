@@ -82,3 +82,25 @@ export async function writeConfig(config: TrackerConfig): Promise<void> {
 export function storageMode(): "github" | "local" {
     return githubEnv() ? "github" : "local";
 }
+
+const STATE_FILENAME = "state.json";
+
+/** Reads the worker's state.json (stock snapshot + site health). */
+export async function readState(): Promise<unknown | null> {
+    const gh = githubEnv();
+    try {
+        if (gh) {
+            const res = await fetch(
+                `https://api.github.com/repos/${gh.repo}/contents/${STATE_FILENAME}`,
+                { headers: GH_API_HEADERS(gh.token), cache: "no-store" }
+            );
+            if (!res.ok) return null;
+            const body = (await res.json()) as { content: string };
+            return JSON.parse(Buffer.from(body.content, "base64").toString("utf-8"));
+        }
+        const raw = await fs.readFile(path.join(process.cwd(), "..", STATE_FILENAME), "utf-8");
+        return JSON.parse(raw);
+    } catch {
+        return null; // state.json may not exist yet
+    }
+}
