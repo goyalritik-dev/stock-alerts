@@ -513,7 +513,9 @@ function Snapshot({ state }: { state: TrackerState }) {
                 >
                     {expanded
                         ? "Show less"
-                        : `Show ${products.length - COLLAPSED_LIMIT} more product${products.length - COLLAPSED_LIMIT === 1 ? "" : "s"}`}
+                        : `Show ${products.length - COLLAPSED_LIMIT} more product${
+                              products.length - COLLAPSED_LIMIT === 1 ? "" : "s"
+                          }`}
                 </button>
             )}
         </section>
