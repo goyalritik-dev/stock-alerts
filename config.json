@@ -22,7 +22,7 @@
         "jiomart": false,
         "blinkit": false,
         "zepto": false,
-        "bigbasket": false
+        "bigbasket": true
     },
     "schedule": {
         "intervalMinutes": 5,

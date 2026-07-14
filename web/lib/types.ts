@@ -24,7 +24,7 @@ export const SITE_LABELS: Record<SiteKey, string> = {
     jiomart: "JioMart (coming soon)",
     blinkit: "Blinkit (coming soon)",
     zepto: "Zepto (coming soon)",
-    bigbasket: "BigBasket (coming soon)",
+    bigbasket: "BigBasket",
 };
 
 export interface TrackerConfig {

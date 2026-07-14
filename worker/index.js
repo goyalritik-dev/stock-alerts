@@ -57,7 +57,7 @@ async function run() {
 
         for (const query of config.search.queries) {
             try {
-                const results = await adapter.search(query);
+                const results = await adapter.search(query, { pincodes: config.pincodes });
                 for (const r of results) byId.set(r.id, r);
             } catch (error) {
                 failures++;
@@ -135,8 +135,8 @@ async function run() {
     if (blockedSites.length) {
         console.warn(
             `\nLikely bot-blocking this run: ${blockedSites.join(", ")}. ` +
-                "Expected from datacenter IPs (GitHub Actions); the failure-streak " +
-                "warning in state.json fires if it persists. Not an infrastructure failure."
+            "Expected from datacenter IPs (GitHub Actions); the failure-streak " +
+            "warning in state.json fires if it persists. Not an infrastructure failure."
         );
     }
     console.log(`\nRun complete. ${alerts} alert(s) sent. State saved.`);
