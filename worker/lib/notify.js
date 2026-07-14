@@ -19,7 +19,7 @@ function inQuietHours(quietHours, now = new Date()) {
         : minutes >= start || minutes < end; // overnight window e.g. 23:00-07:00
 }
 
-function formatMessage(product, serviceability) {
+function formatMessage(product, serviceability, verification) {
     const price = product.price ? `₹${product.price.toLocaleString("en-IN")}` : "price unknown";
     let pin = "";
     if (serviceability?.supported) {
@@ -27,7 +27,13 @@ function formatMessage(product, serviceability) {
     } else {
         pin = "\n(delivery to your pincode not verified — check on site)";
     }
-    return `🎮 PS5 IN STOCK — ${product.siteLabel ?? product.site}\n${product.title}\n${price}${pin}\n${product.url}`;
+    const check =
+        verification?.level === "cart"
+            ? "\n✅ verified: added to cart successfully"
+            : verification?.level === "page"
+                ? "\n✅ verified on product page"
+                : "\n⚠️ based on search results only — verify quickly";
+    return `🎮 PS5 IN STOCK — ${product.siteLabel ?? product.site}\n${product.title}\n${price}${check}${pin}\n${product.url}`;
 }
 
 async function sendTelegram(text) {
@@ -70,8 +76,8 @@ async function dispatch(text, config) {
     }
 }
 
-export async function notifyStockAlert(product, config, serviceability) {
-    const text = formatMessage(product, serviceability);
+export async function notifyStockAlert(product, config, serviceability, verification) {
+    const text = formatMessage(product, serviceability, verification);
     console.log(`\n=== STOCK ALERT ===\n${text}\n===================`);
     await dispatch(text, config);
 }

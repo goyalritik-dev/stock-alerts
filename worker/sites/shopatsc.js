@@ -12,6 +12,37 @@ export default {
     key: "shopatsc",
     label: "Sony ShopAtSC",
 
+    /**
+     * Real add-to-cart simulation (Shopify cart/add.js). 200 = the item
+     * genuinely went into a cart; 422 = Shopify refused (no stock).
+     */
+    async verify(product) {
+        const handle = product.id;
+        const detail = await getJson(`${BASE}/products/${handle}.js`);
+        const variant = (detail.variants ?? []).find((v) => v.available);
+        if (!variant) {
+            return { level: "page", buyable: false, reason: "no available variant" };
+        }
+        const res = await fetch(`${BASE}/cart/add.js`, {
+            method: "POST",
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            body: JSON.stringify({ id: variant.id, quantity: 1 }),
+            signal: AbortSignal.timeout(15000),
+        });
+        if (res.ok) {
+            return { level: "cart", buyable: true, reason: "added to cart OK" };
+        }
+        return {
+            level: "cart",
+            buyable: false,
+            reason: `cart add rejected (${res.status})`,
+        };
+    },
+
     async search(query) {
         const terms = query.toLowerCase().split(/\s+/);
         const results = [];

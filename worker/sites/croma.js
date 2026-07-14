@@ -14,6 +14,44 @@ export default {
     key: "croma",
     label: "Croma",
 
+    /**
+     * Two signals, both must agree:
+     * 1. deliveryoption API for the first configured pincode
+     *    (stockAvailable + a delivery mode enabled)
+     * 2. PDP ld+json offers.availability (schema.org/InStock)
+     * The search stockFlag alone is stale, so this guards against it.
+     */
+    async verify(product, pincodes = []) {
+        const pin = pincodes[0] ?? "110001";
+        const delivery = await getJson(
+            `https://api.croma.com/product/allchannels/v1/pdp/deliveryoption?productCode=${product.id}&pincode=${pin}`,
+            { headers: { Origin: BASE, Referer: `${BASE}/` } }
+        );
+        const deliverable =
+            delivery.stockAvailable === true &&
+            (delivery.homeDeliveryFlag === true || delivery.storePickupFlag === true);
+        if (!deliverable) {
+            return {
+                level: "page",
+                buyable: false,
+                reason: `deliveryoption says stockAvailable=${delivery.stockAvailable}`,
+            };
+        }
+
+        const { getText } = await import("../lib/http.js");
+        const html = await getText(product.url);
+        const inStockLd = /"availability"\s*:\s*"[^"]*InStock/i.test(html);
+        const outOfStockLd = /"availability"\s*:\s*"[^"]*Out\s?of\s?Stock/i.test(html);
+        const buyable = inStockLd && !outOfStockLd;
+        return {
+            level: "page",
+            buyable,
+            reason: buyable
+                ? "deliverable + PDP schema InStock"
+                : `PDP schema availability inStock=${inStockLd} outOfStock=${outOfStockLd}`,
+        };
+    },
+
     async search(query) {
         const params = new URLSearchParams({
             currentPage: "0",

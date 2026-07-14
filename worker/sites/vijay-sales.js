@@ -31,6 +31,26 @@ export default {
     label: "Vijay Sales",
 
     /**
+     * The Unbxd index lags real stock badly (its "Available" cities showed
+     * products whose PDP says OutofStock). Verify against the PDP's
+     * schema.org offers block instead.
+     */
+    async verify(product) {
+        const { getText } = await import("../lib/http.js");
+        const html = await getText(product.url);
+        const inStockLd = /"availability"\s*:\s*"[^"]*\/InStock/i.test(html);
+        const outOfStockLd = /"availability"\s*:\s*"[^"]*Out\s?of\s?Stock/i.test(html);
+        const buyable = inStockLd && !outOfStockLd;
+        return {
+            level: "page",
+            buyable,
+            reason: buyable
+                ? "PDP schema InStock"
+                : `PDP schema inStock=${inStockLd} outOfStock=${outOfStockLd}`,
+        };
+    },
+
+    /**
      * City-level serviceability from the data already fetched in search().
      * Returns { [pincode]: true | false | null } (null = city unknown).
      */

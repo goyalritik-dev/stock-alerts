@@ -1,6 +1,7 @@
 import { loadConfig } from "./lib/config.js";
 import { filterCandidates } from "./lib/matcher.js";
 import { checkServiceability } from "./lib/pincode.js";
+import { verifyBuyable } from "./lib/verify.js";
 import {
     loadState,
     saveState,
@@ -61,7 +62,24 @@ async function run() {
                 `  - ${product.title} | ₹${product.price ?? "?"} | ${product.inStock ? "IN STOCK" : "out of stock"}`
             );
 
-            // Pincode gate: only relevant for products that look in stock.
+            // Gate 1 — deep verification: search indexes lie, so anything that
+            // looks in stock must pass the product-page / cart check.
+            let verification = null;
+            if (product.inStock) {
+                verification = await verifyBuyable(adapter, product, config.pincodes);
+                if (!verification.buyable) {
+                    console.log(
+                        `    (failed ${verification.level} verification: ${verification.reason} — no alert)`
+                    );
+                    product.inStock = false;
+                } else {
+                    console.log(
+                        `    (verified [${verification.level}]: ${verification.reason})`
+                    );
+                }
+            }
+
+            // Gate 2 — pincode serviceability.
             let serviceability = null;
             if (product.inStock) {
                 serviceability = await checkServiceability(
@@ -80,7 +98,7 @@ async function run() {
             const shouldAlert = recordAndDetectTransition(state, product, cooldown);
             if (shouldAlert) {
                 alerts++;
-                await notifyStockAlert(product, config, serviceability);
+                await notifyStockAlert(product, config, serviceability, verification);
             }
         }
     }
