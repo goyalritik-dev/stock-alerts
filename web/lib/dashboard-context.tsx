@@ -19,6 +19,8 @@ interface DashboardContextType {
     dirty: boolean;
     save: () => Promise<void>;
     fetchConfig: () => Promise<void>;
+    runState: { running: boolean };
+    triggerRun: () => Promise<void>;
 }
 
 const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
@@ -31,10 +33,11 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
     const [saving, setSaving] = useState(false);
     const [saveMessage, setSaveMessage] = useState<string | null>(null);
     const [trackerState, setTrackerState] = useState<TrackerState | null>(null);
+    const [runState, setRunState] = useState({ running: false });
 
     const fetchConfig = useCallback(async () => {
         setLoad({ status: "loading" });
-        const res = await fetch("/api/config");
+        const res = await fetch("/api/config", { cache: "no-store" });
         if (!res.ok) {
             const body = await res.json().catch(() => null);
             setLoad({
@@ -53,11 +56,34 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
         setLoad({ status: "ready" });
 
         // Stock snapshot is non-critical; load it after the config
-        void fetch("/api/state")
+        void fetch("/api/state", { cache: "no-store" })
             .then((r) => (r.ok ? r.json() : null))
             .then((b) => setTrackerState(b?.state ?? null))
             .catch(() => setTrackerState(null));
     }, []);
+
+    const checkRunStatus = useCallback(async () => {
+        try {
+            const res = await fetch("/api/run", { cache: "no-store" });
+            if (res.ok) {
+                const data = await res.json();
+                setRunState({ running: data.running });
+            }
+        } catch {}
+    }, []);
+
+    // Poll status periodically if running
+    useEffect(() => {
+        if (runState.running) {
+            const timer = setInterval(checkRunStatus, 2000);
+            return () => clearInterval(timer);
+        }
+    }, [runState.running, checkRunStatus]);
+
+    // Check status on start
+    useEffect(() => {
+        void checkRunStatus();
+    }, [checkRunStatus]);
 
     useEffect(() => {
         void fetchConfig();
@@ -67,6 +93,25 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
         () => config !== null && JSON.stringify(config) !== savedSnapshot,
         [config, savedSnapshot]
     );
+
+    const triggerRun = useCallback(async () => {
+        if (runState.running) return;
+        setRunState({ running: true });
+        try {
+            const res = await fetch("/api/run", { method: "POST" });
+            if (res.ok) {
+                // Fetch fresh state & config once completed
+                const stateRes = await fetch("/api/state", { cache: "no-store" });
+                if (stateRes.ok) {
+                    const b = await stateRes.json();
+                    setTrackerState(b?.state ?? null);
+                }
+            }
+        } catch {
+        } finally {
+            setRunState({ running: false });
+        }
+    }, [runState.running]);
 
     async function save() {
         if (!config) return;
@@ -107,6 +152,8 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
                 dirty,
                 save,
                 fetchConfig,
+                runState,
+                triggerRun,
             }}
         >
             {children}

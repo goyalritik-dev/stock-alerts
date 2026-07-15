@@ -3,6 +3,8 @@ import { isAuthenticated } from "@/lib/auth";
 import { readConfig, storageMode, writeConfig } from "@/lib/config-store";
 import type { TrackerConfig } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
     if (!(await isAuthenticated())) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
