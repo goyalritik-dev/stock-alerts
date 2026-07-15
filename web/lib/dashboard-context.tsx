@@ -35,6 +35,16 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
     const [trackerState, setTrackerState] = useState<TrackerState | null>(null);
     const [runState, setRunState] = useState({ running: false });
 
+    const fetchState = useCallback(async () => {
+        try {
+            const res = await fetch("/api/state", { cache: "no-store" });
+            if (res.ok) {
+                const b = await res.json();
+                setTrackerState(b?.state ?? null);
+            }
+        } catch {}
+    }, []);
+
     const fetchConfig = useCallback(async () => {
         setLoad({ status: "loading" });
         const res = await fetch("/api/config", { cache: "no-store" });
@@ -56,11 +66,8 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
         setLoad({ status: "ready" });
 
         // Stock snapshot is non-critical; load it after the config
-        void fetch("/api/state", { cache: "no-store" })
-            .then((r) => (r.ok ? r.json() : null))
-            .then((b) => setTrackerState(b?.state ?? null))
-            .catch(() => setTrackerState(null));
-    }, []);
+        void fetchState();
+    }, [fetchState]);
 
     const checkRunStatus = useCallback(async () => {
         try {
@@ -72,7 +79,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
         } catch {}
     }, []);
 
-    // Poll status periodically if running
+    // Poll status periodically if running (frequent checks)
     useEffect(() => {
         if (runState.running) {
             const timer = setInterval(checkRunStatus, 2000);
@@ -84,6 +91,17 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         void checkRunStatus();
     }, [checkRunStatus]);
+
+    // Background polling for state and run checks (every 20s)
+    useEffect(() => {
+        if (load.status === "ready") {
+            const timer = setInterval(() => {
+                void fetchState();
+                void checkRunStatus();
+            }, 20000);
+            return () => clearInterval(timer);
+        }
+    }, [load.status, fetchState, checkRunStatus]);
 
     useEffect(() => {
         void fetchConfig();
