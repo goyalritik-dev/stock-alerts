@@ -530,12 +530,14 @@ function Snapshot({ state }: { state: TrackerState }) {
                     </li>
                 ))}
                 {products.length === 0 && (
-                    <li className="text-sm text-zinc-500">
+                    <li className="text-md text-zinc-200 text-center">
                         No products tracked yet — the worker hasn&apos;t run.
                     </li>
                 )}
-                {inStockProducts.length === 0 && (
-                    <li className="text-sm text-zinc-500">No products found in stock</li>
+                {visible.length === 0 && (
+                    <li className="text-md text-zinc-200 text-center">
+                        No products found anywhere
+                    </li>
                 )}
             </ul>
             {displayProducts.length > COLLAPSED_LIMIT && (
