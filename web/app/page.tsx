@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Toggle } from "@/components/ui";
 import { useDashboard } from "@/lib/dashboard-context";
-import { SITE_LABELS, type SiteKey, type TrackerConfig, type TrackerState } from "@/lib/types";
+import { SITE_LABELS, SITES_REGISTRY, type SiteKey, type TrackerConfig, type TrackerState } from "@/lib/types";
 
 export default function Dashboard() {
     const { load, config, trackerState, fetchConfig, runState, triggerRun } = useDashboard();
@@ -95,7 +95,6 @@ export default function Dashboard() {
 }
 
 function Snapshot({ state, config }: { state: TrackerState; config: TrackerConfig | null }) {
-    const [expanded, setExpanded] = useState(false);
     const [filters, setFilters] = useState(state.filters ?? { snapshot_view: "_in_stock" });
 
     const products = Object.entries(state.products ?? {}).sort(
@@ -120,7 +119,6 @@ function Snapshot({ state, config }: { state: TrackerState; config: TrackerConfi
         const lastError = siteState?.lastError ?? null;
 
         if (failures >= 5) {
-            // Keep showing on top of the snapshot until they run successfully (failures goes to 0)
             failedSites.push({
                 key,
                 failures,
@@ -142,9 +140,22 @@ function Snapshot({ state, config }: { state: TrackerState; config: TrackerConfi
     });
 
     const unhealthySites = Object.entries(state.sites ?? {}).filter(([, s]) => s.failures >= 3);
-    const COLLAPSED_LIMIT = 8;
     const displayProducts = filters.snapshot_view === "all" ? products : inStockProducts;
-    const visible = expanded ? displayProducts : displayProducts.slice(0, COLLAPSED_LIMIT);
+
+    // Group displayProducts by siteKey
+    const groupedProducts: Record<SiteKey, typeof displayProducts> = {} as any;
+    displayProducts.forEach((entry) => {
+        const [siteKey] = entry[0].split(":");
+        const key = siteKey as SiteKey;
+        if (!groupedProducts[key]) {
+            groupedProducts[key] = [];
+        }
+        groupedProducts[key].push(entry);
+    });
+
+    const activeRetailers = (Object.keys(SITES_REGISTRY) as SiteKey[]).filter(
+        (siteKey) => groupedProducts[siteKey] && groupedProducts[siteKey].length > 0
+    );
 
     return (
         <section className="glass-panel mb-6 rounded-2xl p-6">
@@ -250,74 +261,88 @@ function Snapshot({ state, config }: { state: TrackerState; config: TrackerConfi
                 </div>
             )}
 
-            <ul className="mt-4 space-y-2">
-                {visible.map(([key, p]) => {
-                    const [siteKey] = key.split(":");
+            <div className="mt-6 space-y-6">
+                {activeRetailers.map((siteKey) => {
+                    const groupProducts = groupedProducts[siteKey];
+                    const metadata = SITES_REGISTRY[siteKey];
+
                     return (
-                        <li
-                            key={key}
-                            className="flex items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-2.5"
-                        >
-                            <div className="min-w-0">
-                                <a
-                                    href={p.url}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="block truncate text-sm text-zinc-200 hover:text-indigo-300"
-                                >
-                                    {p.title}
-                                </a>
-                                <div className="mt-1 flex items-center gap-2 text-xs text-zinc-500">
-                                    <span>{SITE_LABELS[siteKey as SiteKey] ?? siteKey}</span>
-                                    <span>•</span>
-                                    <span>
-                                        checked{" "}
-                                        {new Date(p.lastChecked).toLocaleTimeString("en-IN")}
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="flex flex-shrink-0 items-center gap-3">
-                                {p.price !== null && (
-                                    <span className="text-sm font-semibold text-zinc-100">
-                                        ₹{p.price.toLocaleString("en-IN")}
-                                    </span>
-                                )}
-                                <span
-                                    className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                                        p.inStock
-                                            ? "bg-emerald-500/15 text-emerald-400"
-                                            : "bg-zinc-800 text-zinc-500"
-                                    }`}
-                                >
-                                    {p.inStock ? "In stock" : "Out of stock"}
+                        <div key={siteKey} className="space-y-2">
+                            {/* Retailer Section Header */}
+                            <div className="flex items-center gap-2 border-b border-zinc-850 pb-2 pt-2">
+                                <img
+                                    src={`https://www.google.com/s2/favicons?sz=64&domain=${metadata.domain}`}
+                                    className="w-5 h-5 rounded-md bg-zinc-900 border border-zinc-800 p-0.5"
+                                    alt=""
+                                    onError={(e) => {
+                                        (e.target as HTMLElement).style.display = "none";
+                                    }}
+                                />
+                                <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+                                    {metadata.label}
+                                </h3>
+                                <span className="text-[10px] text-zinc-500">
+                                    ({groupProducts.length} product{groupProducts.length === 1 ? "" : "s"})
                                 </span>
                             </div>
-                        </li>
+
+                            {/* Retailer's Products List */}
+                            <ul className="space-y-2">
+                                {groupProducts.map(([key, p]) => (
+                                    <li
+                                        key={key}
+                                        className="flex items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-2.5"
+                                    >
+                                        <div className="min-w-0">
+                                            <a
+                                                href={p.url}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="block truncate text-sm text-zinc-200 hover:text-indigo-300 hover:underline"
+                                            >
+                                                {p.title}
+                                            </a>
+                                            <div className="mt-1 flex items-center gap-2 text-xs text-zinc-500">
+                                                <span>
+                                                    checked{" "}
+                                                    {new Date(p.lastChecked).toLocaleTimeString("en-IN")}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-shrink-0 items-center gap-3">
+                                            {p.price !== null && (
+                                                <span className="text-sm font-semibold text-zinc-100">
+                                                    ₹{p.price.toLocaleString("en-IN")}
+                                                </span>
+                                            )}
+                                            <span
+                                                className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                                                    p.inStock
+                                                        ? "bg-emerald-500/15 text-emerald-400"
+                                                        : "bg-zinc-800 text-zinc-500"
+                                                }`}
+                                            >
+                                                {p.inStock ? "In stock" : "Out of stock"}
+                                            </span>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     );
                 })}
+
                 {products.length === 0 && (
-                    <li className="text-md text-zinc-200 text-center">
+                    <div className="text-sm text-zinc-500 text-center py-6">
                         No products tracked yet — the worker hasn&apos;t run.
-                    </li>
+                    </div>
                 )}
-                {visible.length === 0 && (
-                    <li className="text-md text-zinc-200 text-center">
-                        No products found anywhere
-                    </li>
+                {products.length > 0 && activeRetailers.length === 0 && (
+                    <div className="text-sm text-zinc-500 text-center py-6">
+                        No products found matching filters.
+                    </div>
                 )}
-            </ul>
-            {displayProducts.length > COLLAPSED_LIMIT && (
-                <button
-                    onClick={() => setExpanded(!expanded)}
-                    className="mt-3 w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2 text-xs text-zinc-400 transition hover:bg-zinc-900 hover:text-zinc-200"
-                >
-                    {expanded
-                        ? "Show less"
-                        : `Show ${products.length - COLLAPSED_LIMIT} more product${
-                              products.length - COLLAPSED_LIMIT === 1 ? "" : "s"
-                          }`}
-                </button>
-            )}
+            </div>
         </section>
     );
 }
