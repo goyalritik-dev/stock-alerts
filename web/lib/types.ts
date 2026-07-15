@@ -18,6 +18,65 @@ export const SITE_LABELS: Record<SiteKey, string> = {
     bigbasket: "BigBasket",
     blinkit: "Blinkit",
 };
+export interface SiteMetadata {
+    key: SiteKey;
+    label: string;
+    url: string;
+    domain: string;
+    comingSoon?: boolean;
+}
+
+export const SITES_REGISTRY: Record<SiteKey, SiteMetadata> = {
+    amazon: {
+        key: "amazon",
+        label: "Amazon.in",
+        url: "https://www.amazon.in",
+        domain: "amazon.in",
+    },
+    flipkart: {
+        key: "flipkart",
+        label: "Flipkart",
+        url: "https://www.flipkart.com",
+        domain: "flipkart.com",
+    },
+    croma: {
+        key: "croma",
+        label: "Croma",
+        url: "https://www.croma.com",
+        domain: "croma.com",
+    },
+    relianceDigital: {
+        key: "relianceDigital",
+        label: "Reliance Digital",
+        url: "https://www.reliancedigital.in",
+        domain: "reliancedigital.in",
+        comingSoon: true,
+    },
+    vijaySales: {
+        key: "vijaySales",
+        label: "Vijay Sales",
+        url: "https://www.vijaysales.com",
+        domain: "vijaysales.com",
+    },
+    shopatsc: {
+        key: "shopatsc",
+        label: "Sony ShopAtSC",
+        url: "https://shopatsc.com",
+        domain: "shopatsc.com",
+    },
+    bigbasket: {
+        key: "bigbasket",
+        label: "BigBasket",
+        url: "https://www.bigbasket.com",
+        domain: "bigbasket.com",
+    },
+    blinkit: {
+        key: "blinkit",
+        label: "Blinkit",
+        url: "https://blinkit.com",
+        domain: "blinkit.com",
+    },
+};
 
 export interface TrackerConfig {
     search: {

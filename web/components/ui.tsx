@@ -12,7 +12,7 @@ export function Section({
     children: React.ReactNode;
 }) {
     return (
-        <section className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-lg shadow-black/20">
+        <section className="glass-panel rounded-2xl p-6 shadow-lg shadow-black/20">
             <h2 className="text-base font-semibold text-zinc-100">{title}</h2>
             {description && <p className="mt-1 text-sm text-zinc-500">{description}</p>}
             <div className="mt-4 space-y-4">{children}</div>

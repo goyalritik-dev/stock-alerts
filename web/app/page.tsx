@@ -2,7 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Field, NumberInput, Section, TagInput, Toggle } from "@/components/ui";
-import { SITE_LABELS, type SiteKey, type TrackerConfig, type TrackerState } from "@/lib/types";
+import {
+    SITE_LABELS,
+    SITES_REGISTRY,
+    type SiteKey,
+    type TrackerConfig,
+    type TrackerState,
+} from "@/lib/types";
 
 type LoadState =
     | { status: "loading" }
@@ -262,25 +268,120 @@ export default function Dashboard() {
                     </Section>
                 </div>
 
-                <Section title="Sites" description="Toggle which retailers are checked every run.">
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                        {(Object.keys(SITE_LABELS) as SiteKey[]).map((key) => (
-                            <div
-                                key={key}
-                                className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3"
-                            >
-                                <span className="text-sm text-zinc-200">{SITE_LABELS[key]}</span>
-                                <Toggle
-                                    checked={config.sites[key] ?? false}
-                                    onChange={(on) =>
-                                        setConfig({
-                                            ...config,
-                                            sites: { ...config.sites, [key]: on },
-                                        })
-                                    }
-                                />
-                            </div>
-                        ))}
+                <Section
+                    title="Retailer Channels"
+                    description="Configure and monitor retail adapters. Changes apply on the worker's next run."
+                >
+                    <div className="flex flex-col gap-3">
+                        {(Object.keys(SITES_REGISTRY) as SiteKey[]).map((key) => {
+                            const metadata = SITES_REGISTRY[key];
+                            const isEnabled = config.sites[key] ?? false;
+                            const siteState = trackerState?.sites?.[key];
+                            const failures = siteState?.failures ?? 0;
+
+                            // Determine status indicator classes and glows
+                            let statusDotColor = "bg-zinc-600";
+                            let statusDotGlow = "";
+                            let statusText = "Disabled";
+
+                            if (metadata.comingSoon) {
+                                statusDotColor = "bg-zinc-800";
+                                statusText = "Coming Soon";
+                            } else if (isEnabled) {
+                                if (failures === 0) {
+                                    statusDotColor = "bg-emerald-400";
+                                    statusDotGlow = "shadow-[0_0_8px_#34d399]";
+                                    statusText = "Online";
+                                } else if (failures >= 5) {
+                                    statusDotColor = "bg-rose-500 animate-pulse";
+                                    statusDotGlow = "shadow-[0_0_10px_#f43f5e]";
+                                    statusText = `${failures}x Failures`;
+                                } else {
+                                    statusDotColor = "bg-amber-400";
+                                    statusDotGlow = "shadow-[0_0_8px_#fbbf24]";
+                                    statusText = "Issues";
+                                }
+                            }
+
+                            return (
+                                <div
+                                    key={key}
+                                    className={`retailer-card rounded-xl border p-4 flex items-center justify-between transition-all duration-200 ${
+                                        isEnabled
+                                            ? "bg-zinc-900/25 border-zinc-800 hover:border-zinc-700/60"
+                                            : "bg-zinc-950/20 border-zinc-900/60 opacity-60"
+                                    }`}
+                                >
+                                    <div className="flex items-center gap-3.5 min-w-0">
+                                        {/* Brand Favicon Logo from Google CDN */}
+                                        <a
+                                            href={metadata.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="relative flex-shrink-0 group"
+                                            title={`Visit ${metadata.label}`}
+                                        >
+                                            <img
+                                                src={`https://www.google.com/s2/favicons?sz=64&domain=${metadata.domain}`}
+                                                className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 p-1 group-hover:border-zinc-700 transition"
+                                                alt=""
+                                                onError={(e) => {
+                                                    // Fallback if google favicon CDN fails
+                                                    (e.target as HTMLElement).style.display =
+                                                        "none";
+                                                }}
+                                            />
+                                        </a>
+
+                                        <div className="min-w-0">
+                                            <div className="flex items-center gap-1.5">
+                                                <a
+                                                    href={metadata.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-sm font-medium text-zinc-200 hover:text-zinc-100 transition truncate hover:underline"
+                                                >
+                                                    {metadata.label}
+                                                </a>
+                                                {isEnabled && siteState?.lastError && (
+                                                    <span
+                                                        title={siteState.lastError}
+                                                        className="text-rose-400 hover:text-rose-300 cursor-help"
+                                                    >
+                                                        ⚠️
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <div className="flex items-center gap-1.5 mt-0.5">
+                                                <span
+                                                    className={`h-1.5 w-1.5 rounded-full ${statusDotColor} ${statusDotGlow}`}
+                                                />
+                                                <span className="text-[10px] text-zinc-500 font-medium">
+                                                    {statusText}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Toggle switch on the right */}
+                                    {!metadata.comingSoon ? (
+                                        <Toggle
+                                            checked={isEnabled}
+                                            onChange={(on) =>
+                                                setConfig({
+                                                    ...config,
+                                                    sites: { ...config.sites, [key]: on },
+                                                })
+                                            }
+                                        />
+                                    ) : (
+                                        <span className="text-[9px] bg-zinc-900 text-zinc-600 font-semibold px-2 py-0.5 rounded-md border border-zinc-800/80">
+                                            Soon
+                                        </span>
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
                 </Section>
 
@@ -438,7 +539,12 @@ function Snapshot({ state, config }: { state: TrackerState; config: TrackerConfi
 
     // Separate sites into successful and failed ones based on failures status
     const successfulSites: SiteKey[] = [];
-    const failedSites: { key: SiteKey; failures: number; lastError: string | null; isPersistent: boolean }[] = [];
+    const failedSites: {
+        key: SiteKey;
+        failures: number;
+        lastError: string | null;
+        isPersistent: boolean;
+    }[] = [];
 
     (Object.keys(SITE_LABELS) as SiteKey[]).forEach((key) => {
         const isEnabled = config?.sites[key] ?? false;
@@ -474,7 +580,7 @@ function Snapshot({ state, config }: { state: TrackerState; config: TrackerConfi
     const visible = expanded ? displayProducts : displayProducts.slice(0, COLLAPSED_LIMIT);
 
     return (
-        <section className="mb-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6">
+        <section className="glass-panel mb-6 rounded-2xl p-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="text-base font-semibold text-zinc-100">
                     Stock snapshot
@@ -498,7 +604,9 @@ function Snapshot({ state, config }: { state: TrackerState; config: TrackerConfi
             {/* Captured Status Pills on top of snapshot */}
             <div className="mt-4 p-4 rounded-xl border border-zinc-800/80 bg-zinc-950/40">
                 <div className="flex flex-wrap items-center gap-3">
-                    <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Last Run Status:</span>
+                    <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+                        Last Run Status:
+                    </span>
                     <div className="flex flex-wrap gap-2">
                         {successfulSites.map((key) => (
                             <span
@@ -519,7 +627,11 @@ function Snapshot({ state, config }: { state: TrackerState; config: TrackerConfi
                                         : "bg-amber-500/10 text-amber-400 border-amber-500/20 hover:bg-amber-500/15"
                                 }`}
                             >
-                                <span className={`h-1.5 w-1.5 rounded-full ${isPersistent ? "bg-rose-400 animate-ping" : "bg-amber-400"}`} />
+                                <span
+                                    className={`h-1.5 w-1.5 rounded-full ${
+                                        isPersistent ? "bg-rose-400 animate-ping" : "bg-amber-400"
+                                    }`}
+                                />
                                 {SITE_LABELS[key]}
                                 <span className="text-[10px] opacity-75 ml-1">
                                     ({failures}x failed{isPersistent ? " - persistent" : ""})
@@ -527,7 +639,9 @@ function Snapshot({ state, config }: { state: TrackerState; config: TrackerConfi
                             </span>
                         ))}
                         {successfulSites.length === 0 && failedSites.length === 0 && (
-                            <span className="text-xs text-zinc-500 italic">No sites active in config</span>
+                            <span className="text-xs text-zinc-500 italic">
+                                No sites active in config
+                            </span>
                         )}
                     </div>
                 </div>
@@ -635,8 +749,14 @@ function Shell({
     headerRight?: React.ReactNode;
 }) {
     return (
-        <div className="min-h-screen bg-zinc-950 text-zinc-100">
-            <div className="mx-auto max-w-5xl px-6 py-10">
+        <div className="min-h-screen bg-zinc-950 text-zinc-100 relative overflow-hidden">
+            {/* Ambient Background Glow Layer */}
+            <div className="ambient-bg">
+                <div className="ambient-glow-1" />
+                <div className="ambient-glow-2" />
+            </div>
+
+            <div className="mx-auto max-w-5xl px-6 py-10 relative z-10">
                 <header className="mb-8 flex flex-wrap items-center justify-between gap-4">
                     <div>
                         <h1 className="text-2xl font-bold tracking-tight">PS5 Stock Alert</h1>
@@ -680,7 +800,7 @@ function PasswordGate({ onUnlocked }: { onUnlocked: () => void }) {
     return (
         <form
             onSubmit={submit}
-            className="mx-auto mt-24 max-w-sm rounded-2xl border border-zinc-800 bg-zinc-900/60 p-8 text-center"
+            className="glass-panel mx-auto mt-24 max-w-sm rounded-2xl p-8 text-center"
         >
             <h2 className="text-lg font-semibold">Dashboard locked</h2>
             <p className="mt-1 text-sm text-zinc-500">Enter the access password to continue</p>
