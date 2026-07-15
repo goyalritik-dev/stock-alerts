@@ -95,16 +95,16 @@
       "url": "https://www.reliancedigital.in/product/sony-playstation-5-digital-edition-console/?utm_content=cGxheXN0YXRpb24gNSBjb25zb2xlOjo6MQ%253D%253D&utm_medium=search",
       "price": 44990,
       "inStock": false,
-      "lastChecked": "2026-07-15T03:32:21.041Z",
+      "lastChecked": "2026-07-15T05:57:37.363Z",
       "firstSeen": "2026-07-14T18:46:40.419Z",
       "lastAlertAt": "2026-07-14T18:46:40.419Z"
     },
     "relianceDigital:sony-playstation-ps5-slim-console-luh1rv-7537998": {
       "title": "Sony Playstation PS5 Slim Console",
-      "url": "https://www.reliancedigital.in/product/sony-playstation-ps5-slim-console-luh1rv-7537998/?utm_content=cHM1IGNvbnNvbGU6Ojoy&utm_medium=search",
+      "url": "https://www.reliancedigital.in/product/sony-playstation-ps5-slim-console-luh1rv-7537998/?utm_content=cGxheXN0YXRpb24gNSBjb25zb2xlOjo6Mg%253D%253D&utm_medium=search",
       "price": 54990,
       "inStock": false,
-      "lastChecked": "2026-07-15T03:32:20.852Z",
+      "lastChecked": "2026-07-15T05:57:37.385Z",
       "firstSeen": "2026-07-14T18:46:41.496Z",
       "lastAlertAt": "2026-07-14T18:46:41.496Z"
     },
@@ -113,7 +113,7 @@
       "url": "https://www.reliancedigital.in/product/sony-playstation-ps5-slim-digital-console-luh1rv-7537999/?utm_content=cGxheXN0YXRpb24gNSBjb25zb2xlOjo6Mw%253D%253D&utm_medium=search",
       "price": 49990,
       "inStock": false,
-      "lastChecked": "2026-07-15T03:32:20.884Z",
+      "lastChecked": "2026-07-15T05:57:37.419Z",
       "firstSeen": "2026-07-14T18:46:42.591Z",
       "lastAlertAt": "2026-07-14T18:46:42.591Z"
     },
@@ -131,7 +131,7 @@
       "url": "https://www.vijaysales.com/p/254871/sony-ps5r-disc-edition-console-video-game-dual-sense-wireless-controller-bundle",
       "price": 58190,
       "inStock": false,
-      "lastChecked": "2026-07-15T03:32:21.720Z",
+      "lastChecked": "2026-07-15T05:57:33.522Z",
       "firstSeen": "2026-07-14T18:46:42.932Z",
       "lastAlertAt": null
     },
@@ -140,7 +140,7 @@
       "url": "https://www.vijaysales.com/p/254870/sony-playstationr5-digital-edition-console-video-game-825gb-ps5r-slim",
       "price": 49990,
       "inStock": false,
-      "lastChecked": "2026-07-15T03:32:26.118Z",
+      "lastChecked": "2026-07-15T05:57:37.634Z",
       "firstSeen": "2026-07-14T18:46:43.280Z",
       "lastAlertAt": null
     },
@@ -149,7 +149,7 @@
       "url": "https://www.vijaysales.com/p/252606/sony-playstationr5-disc-sa-e-edition-console-video-game-ps5r-slim",
       "price": 54990,
       "inStock": false,
-      "lastChecked": "2026-07-15T03:32:29.827Z",
+      "lastChecked": "2026-07-15T05:57:37.651Z",
       "firstSeen": "2026-07-14T18:46:43.424Z",
       "lastAlertAt": null
     },
@@ -158,7 +158,7 @@
       "url": "https://www.vijaysales.com/p/235635/sony-playstation-5-slim-digital-edition-console-fortnite-cobalt-star-bundle",
       "price": 49990,
       "inStock": false,
-      "lastChecked": "2026-07-15T03:32:29.827Z",
+      "lastChecked": "2026-07-15T05:57:37.652Z",
       "firstSeen": "2026-07-14T18:46:43.424Z",
       "lastAlertAt": null
     },
@@ -167,7 +167,7 @@
       "url": "https://www.vijaysales.com/p/235634/sony-playstation-ps5-disc-fortnite-bundle-edition",
       "price": 54990,
       "inStock": false,
-      "lastChecked": "2026-07-15T03:32:29.827Z",
+      "lastChecked": "2026-07-15T05:57:37.652Z",
       "firstSeen": "2026-07-14T18:46:43.424Z",
       "lastAlertAt": null
     },
@@ -237,45 +237,45 @@
   },
   "sites": {
     "amazon": {
-      "failures": 3,
+      "failures": 4,
       "lastSuccess": "2026-07-14T22:10:01.011Z",
       "lastError": "[likely bot-blocking] GET https://www.amazon.in/s?k=playstation%205%20console -> 503"
     },
     "flipkart": {
-      "failures": 1,
+      "failures": 2,
       "lastSuccess": "2026-07-15T00:07:06.428Z",
-      "lastError": "fetch failed"
+      "lastError": "The operation was aborted due to timeout"
     },
     "croma": {
-      "failures": 0,
+      "failures": 1,
       "lastSuccess": "2026-07-15T03:32:09.666Z",
-      "lastError": null
+      "lastError": "The operation was aborted due to timeout"
     },
     "relianceDigital": {
       "failures": 0,
-      "lastSuccess": "2026-07-15T03:32:20.797Z",
+      "lastSuccess": "2026-07-15T05:57:37.342Z",
       "lastError": null
     },
     "vijaySales": {
       "failures": 0,
-      "lastSuccess": "2026-07-15T03:32:21.720Z",
+      "lastSuccess": "2026-07-15T05:57:33.521Z",
       "lastError": null
     },
     "shopatsc": {
       "failures": 0,
-      "lastSuccess": "2026-07-15T03:32:32.431Z",
+      "lastSuccess": "2026-07-15T05:57:40.176Z",
       "lastError": null
     },
     "bigbasket": {
       "failures": 0,
-      "lastSuccess": "2026-07-15T03:32:35.100Z",
+      "lastSuccess": "2026-07-15T05:57:39.555Z",
       "lastError": null
     },
     "blinkit": {
-      "failures": 5,
+      "failures": 6,
       "lastSuccess": "2026-07-14T20:40:40.761Z",
       "lastError": "[likely bot-blocking] Failed to get Blinkit auth_key: 403"
     }
   },
-  "lastRunAt": "2026-07-15T03:32:39.105Z"
+  "lastRunAt": "2026-07-15T05:57:40.177Z"
 }
