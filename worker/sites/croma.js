@@ -1,4 +1,4 @@
-import { getJson } from "../lib/http.js";
+import { getJson, getText } from "../lib/http.js";
 
 /**
  * Croma (Tata) — official search API used by their PWA.
@@ -20,8 +20,8 @@ async function checkDelivery(productCode, pincode) {
         { headers: { Origin: BASE, Referer: `${BASE}/` } }
     );
     return (
-        delivery.stockAvailable === true &&
-        (delivery.homeDeliveryFlag === true || delivery.storePickupFlag === true)
+        delivery?.stockAvailable === true &&
+        (delivery?.homeDeliveryFlag === true || delivery?.storePickupFlag === true)
     );
 }
 
@@ -47,8 +47,12 @@ export default {
             };
         }
 
-        const { getText } = await import("../lib/http.js");
-        const html = await getText(product.url);
+        const html = await getText(product.url, {
+            headers: {
+                Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                Referer: `${BASE}/`,
+            },
+        });
         const inStockLd = /"availability"\s*:\s*"[^"]*InStock/i.test(html);
         const outOfStockLd = /"availability"\s*:\s*"[^"]*Out\s?of\s?Stock/i.test(html);
         const buyable = inStockLd && !outOfStockLd;

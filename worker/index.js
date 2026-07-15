@@ -2,21 +2,13 @@ import { loadConfig } from "./lib/config.js";
 import { filterCandidates } from "./lib/matcher.js";
 import { checkServiceability } from "./lib/pincode.js";
 import { verifyBuyable } from "./lib/verify.js";
-import {
-    loadState,
-    saveState,
-    recordAndDetectTransition,
-    recordSiteResult,
-} from "./lib/state.js";
+import { loadState, saveState, recordAndDetectTransition, recordSiteResult } from "./lib/state.js";
 import { notifyStockAlert, notifyWarning } from "./lib/notify.js";
 import { adapters } from "./sites/index.js";
 
 /** Does this error look like bot-blocking rather than a broken site/worker? */
 function looksBlocked(error) {
-    return (
-        error?.blocked === true ||
-        /captcha|bot wall|403|429|503/i.test(error?.message ?? "")
-    );
+    return error?.blocked === true || /captcha|bot wall|403|429|503/i.test(error?.message ?? "");
 }
 
 /**
@@ -62,9 +54,7 @@ async function processSite(key, adapter, config, state, cooldown) {
 
     // Run all search queries in parallel for this site
     const queryResults = await Promise.allSettled(
-        config.search.queries.map((query) =>
-            adapter.search(query, { pincodes: config.pincodes })
-        )
+        config.search.queries.map((query) => adapter.search(query, { pincodes: config.pincodes }))
     );
 
     for (let i = 0; i < queryResults.length; i++) {
@@ -92,15 +82,15 @@ async function processSite(key, adapter, config, state, cooldown) {
         0,
         config.search.maxResultsPerSite
     );
-    console.log(
-        `[${key}] ${byId.size} raw result(s), ${candidates.length} matching candidate(s)`
-    );
+    console.log(`[${key}] ${byId.size} raw result(s), ${candidates.length} matching candidate(s)`);
 
     let alerts = 0;
 
     for (const product of candidates) {
         console.log(
-            `  - ${product.title} | ₹${product.price ?? "?"} | ${product.inStock ? "IN STOCK" : "out of stock"}`
+            `  - ${product.title} | ₹${product.price ?? "?"} | ${
+                product.inStock ? "IN STOCK" : "out of stock"
+            }`
         );
 
         // Gate 1 — deep verification: search indexes lie, so anything that
@@ -114,20 +104,14 @@ async function processSite(key, adapter, config, state, cooldown) {
                 );
                 product.inStock = false;
             } else {
-                console.log(
-                    `    (verified [${verification.level}]: ${verification.reason})`
-                );
+                console.log(`    (verified [${verification.level}]: ${verification.reason})`);
             }
         }
 
         // Gate 2 — pincode serviceability.
         let serviceability = null;
         if (product.inStock) {
-            serviceability = await checkServiceability(
-                adapter,
-                product,
-                config.pincodes
-            );
+            serviceability = await checkServiceability(adapter, product, config.pincodes);
             if (serviceability.supported && serviceability.serviceable.length === 0) {
                 console.log(
                     `    (in stock but not deliverable to ${config.pincodes.join(", ")} — no alert)`
@@ -143,7 +127,7 @@ async function processSite(key, adapter, config, state, cooldown) {
         }
     }
 
-    return { alerts, isBlocked };
+    return { alerts, isBlocked, ok: siteOk, error: lastError };
 }
 
 async function run() {
@@ -162,6 +146,7 @@ async function run() {
 
     let totalAlerts = 0;
     const blockedSites = [];
+    const siteStatus = []; // { key, ok, error? } for each site
 
     // Process sites with controlled concurrency (2 at a time).
     // This cuts total runtime ~3-4× without overwhelming retailers.
@@ -174,27 +159,41 @@ async function run() {
             } catch (error) {
                 console.error(`[${key}] site processing failed: ${error.message}`);
                 recordSiteResult(state, key, false, error.message);
-                return { alerts: 0, isBlocked: false };
+                return { alerts: 0, isBlocked: false, ok: false, error: error.message };
             }
         },
         2 // concurrency limit
     );
 
     for (let i = 0; i < active.length; i++) {
-        const { alerts, isBlocked } = siteResults[i];
+        const { alerts, isBlocked, ok, error } = siteResults[i];
         totalAlerts += alerts;
         if (isBlocked) blockedSites.push(active[i]);
+        siteStatus.push({ key: active[i], ok, error });
     }
 
     await saveState(state);
 
-    if (blockedSites.length) {
-        console.warn(
-            `\nLikely bot-blocking this run: ${blockedSites.join(", ")}. ` +
-            "Expected from datacenter IPs (GitHub Actions); the failure-streak " +
-            "warning in state.json fires if it persists. Not an infrastructure failure."
+    // ── Site status summary ──────────────────────────────────────────
+    const successful = siteStatus.filter((s) => s.ok);
+    const failed = siteStatus.filter((s) => !s.ok);
+
+    console.log("\n── Site Status Summary ──────────────────────────");
+    if (successful.length) {
+        console.log(
+            `  ✓ Successful (${successful.length}): ${successful.map((s) => s.key).join(", ")}`
         );
     }
+    if (failed.length) {
+        console.log(`  ✗ Failed (${failed.length}):`);
+        for (const s of failed) {
+            console.log(`      ${s.key}: ${s.error}`);
+        }
+    }
+    if (blockedSites.length) {
+        console.log(`  ⚠ Likely bot-blocked: ${blockedSites.join(", ")}`);
+    }
+    console.log("─────────────────────────────────────────────────");
     console.log(`\nRun complete. ${totalAlerts} alert(s) sent. State saved.`);
 }
 
