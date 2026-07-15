@@ -148,7 +148,7 @@ export default function Dashboard() {
                 </p>
             )}
 
-            {trackerState && <Snapshot state={trackerState} />}
+            {trackerState && <Snapshot state={trackerState} config={config} />}
 
             <div className="grid gap-6 lg:grid-cols-2">
                 <Section
@@ -426,7 +426,7 @@ export default function Dashboard() {
     );
 }
 
-function Snapshot({ state }: { state: TrackerState }) {
+function Snapshot({ state, config }: { state: TrackerState; config: TrackerConfig | null }) {
     const [expanded, setExpanded] = useState(false);
     const [filters, setFilters] = useState(state.filters ?? { snapshot_view: "_in_stock" });
 
@@ -435,6 +435,39 @@ function Snapshot({ state }: { state: TrackerState }) {
     );
     const inStockProducts = products.filter(([, p]) => p.inStock);
     const inStockCount = inStockProducts.length;
+
+    // Separate sites into successful and failed ones based on failures status
+    const successfulSites: SiteKey[] = [];
+    const failedSites: { key: SiteKey; failures: number; lastError: string | null; isPersistent: boolean }[] = [];
+
+    (Object.keys(SITE_LABELS) as SiteKey[]).forEach((key) => {
+        const isEnabled = config?.sites[key] ?? false;
+        const siteState = state.sites?.[key];
+        const failures = siteState?.failures ?? 0;
+        const lastError = siteState?.lastError ?? null;
+
+        if (failures >= 5) {
+            // Keep showing on top of the snapshot until they run successfully (failures goes to 0)
+            failedSites.push({
+                key,
+                failures,
+                lastError,
+                isPersistent: true,
+            });
+        } else if (isEnabled) {
+            if (failures === 0) {
+                successfulSites.push(key);
+            } else {
+                failedSites.push({
+                    key,
+                    failures,
+                    lastError,
+                    isPersistent: false,
+                });
+            }
+        }
+    });
+
     const unhealthySites = Object.entries(state.sites ?? {}).filter(([, s]) => s.failures >= 3);
     const COLLAPSED_LIMIT = 8;
     const displayProducts = filters.snapshot_view === "all" ? products : inStockProducts;
@@ -460,6 +493,44 @@ function Snapshot({ state }: { state: TrackerState }) {
                         last run {new Date(state.lastRunAt).toLocaleString("en-IN")}
                     </span>
                 )}
+            </div>
+
+            {/* Captured Status Pills on top of snapshot */}
+            <div className="mt-4 p-4 rounded-xl border border-zinc-800/80 bg-zinc-950/40">
+                <div className="flex flex-wrap items-center gap-3">
+                    <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Last Run Status:</span>
+                    <div className="flex flex-wrap gap-2">
+                        {successfulSites.map((key) => (
+                            <span
+                                key={key}
+                                className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400 border border-emerald-500/20 shadow-sm transition hover:bg-emerald-500/15"
+                            >
+                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                {SITE_LABELS[key]}
+                            </span>
+                        ))}
+                        {failedSites.map(({ key, failures, lastError, isPersistent }) => (
+                            <span
+                                key={key}
+                                title={lastError ?? "Unknown error"}
+                                className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium border shadow-sm transition ${
+                                    isPersistent
+                                        ? "bg-rose-500/15 text-rose-300 border-rose-500/30 hover:bg-rose-500/20"
+                                        : "bg-amber-500/10 text-amber-400 border-amber-500/20 hover:bg-amber-500/15"
+                                }`}
+                            >
+                                <span className={`h-1.5 w-1.5 rounded-full ${isPersistent ? "bg-rose-400 animate-ping" : "bg-amber-400"}`} />
+                                {SITE_LABELS[key]}
+                                <span className="text-[10px] opacity-75 ml-1">
+                                    ({failures}x failed{isPersistent ? " - persistent" : ""})
+                                </span>
+                            </span>
+                        ))}
+                        {successfulSites.length === 0 && failedSites.length === 0 && (
+                            <span className="text-xs text-zinc-500 italic">No sites active in config</span>
+                        )}
+                    </div>
+                </div>
             </div>
 
             <div className="flex justify-end mt-3 gap-3">
