@@ -5,7 +5,7 @@
       "url": "https://www.flipkart.com/sony-playstation-5-console-825-gb/p/itm62f0f8b3c0bfb?pid=GMCGHMTYZ8BUBMFB",
       "price": 54990,
       "inStock": false,
-      "lastChecked": "2026-07-15T08:35:35.313Z",
+      "lastChecked": "2026-07-15T08:38:18.554Z",
       "firstSeen": "2026-07-14T18:46:35.582Z",
       "lastAlertAt": null
     },
@@ -23,7 +23,7 @@
       "url": "https://www.flipkart.com/sony-ps5-console-digital-fortnite-bundle-slim-1-tb-yes/p/itm1660d204e39f8?pid=GMCH6S3SBAPR7EFH",
       "price": 44990,
       "inStock": false,
-      "lastChecked": "2026-07-15T08:35:35.313Z",
+      "lastChecked": "2026-07-15T08:38:18.554Z",
       "firstSeen": "2026-07-14T18:46:35.582Z",
       "lastAlertAt": null
     },
@@ -32,7 +32,7 @@
       "url": "https://www.flipkart.com/sony-ps5-console-digital-slim-cfi-2008b01-1024-gb/p/itmcabcf14108133?pid=GMCHGRYKDDGCUZJE",
       "price": 49990,
       "inStock": false,
-      "lastChecked": "2026-07-15T08:35:35.313Z",
+      "lastChecked": "2026-07-15T08:38:18.554Z",
       "firstSeen": "2026-07-14T18:46:35.582Z",
       "lastAlertAt": null
     },
@@ -131,7 +131,7 @@
       "url": "https://www.vijaysales.com/p/254871/sony-ps5r-disc-edition-console-video-game-dual-sense-wireless-controller-bundle",
       "price": 58190,
       "inStock": false,
-      "lastChecked": "2026-07-15T08:35:35.898Z",
+      "lastChecked": "2026-07-15T08:38:19.202Z",
       "firstSeen": "2026-07-14T18:46:42.932Z",
       "lastAlertAt": null
     },
@@ -140,7 +140,7 @@
       "url": "https://www.vijaysales.com/p/254870/sony-playstationr5-digital-edition-console-video-game-825gb-ps5r-slim",
       "price": 49990,
       "inStock": false,
-      "lastChecked": "2026-07-15T08:35:40.042Z",
+      "lastChecked": "2026-07-15T08:38:19.374Z",
       "firstSeen": "2026-07-14T18:46:43.280Z",
       "lastAlertAt": null
     },
@@ -149,7 +149,7 @@
       "url": "https://www.vijaysales.com/p/252606/sony-playstationr5-disc-sa-e-edition-console-video-game-ps5r-slim",
       "price": 54990,
       "inStock": false,
-      "lastChecked": "2026-07-15T08:35:40.090Z",
+      "lastChecked": "2026-07-15T08:38:19.421Z",
       "firstSeen": "2026-07-14T18:46:43.424Z",
       "lastAlertAt": null
     },
@@ -158,7 +158,7 @@
       "url": "https://www.vijaysales.com/p/235635/sony-playstation-5-slim-digital-edition-console-fortnite-cobalt-star-bundle",
       "price": 49990,
       "inStock": false,
-      "lastChecked": "2026-07-15T08:35:40.090Z",
+      "lastChecked": "2026-07-15T08:38:19.421Z",
       "firstSeen": "2026-07-14T18:46:43.424Z",
       "lastAlertAt": null
     },
@@ -167,7 +167,7 @@
       "url": "https://www.vijaysales.com/p/235634/sony-playstation-ps5-disc-fortnite-bundle-edition",
       "price": 54990,
       "inStock": false,
-      "lastChecked": "2026-07-15T08:35:40.090Z",
+      "lastChecked": "2026-07-15T08:38:19.421Z",
       "firstSeen": "2026-07-14T18:46:43.424Z",
       "lastAlertAt": null
     },
@@ -185,7 +185,7 @@
       "url": "https://www.flipkart.com/sony-ps5-console-disc-fortnite-bundle-slim-1-tb-yes/p/itma8f2dd1b539f1?pid=GMCH6S3SEBEHWBDW",
       "price": 54990,
       "inStock": false,
-      "lastChecked": "2026-07-15T08:35:35.313Z",
+      "lastChecked": "2026-07-15T08:38:18.554Z",
       "firstSeen": "2026-07-14T19:37:06.645Z",
       "lastAlertAt": null
     },
@@ -203,7 +203,7 @@
       "url": "https://www.flipkart.com/sony-ps5-console-disc-slim-ps5-cfi-2008a01-1-tb/p/itmdb538afe986e8?pid=GMCH8WUTFZKVZNJE",
       "price": 58190,
       "inStock": false,
-      "lastChecked": "2026-07-15T08:35:35.313Z",
+      "lastChecked": "2026-07-15T08:38:18.554Z",
       "firstSeen": "2026-07-14T19:37:06.645Z",
       "lastAlertAt": null
     },
@@ -238,18 +238,18 @@
   "sites": {
     "amazon": {
       "failures": 0,
-      "lastSuccess": "2026-07-15T08:35:35.560Z",
+      "lastSuccess": "2026-07-15T08:38:18.868Z",
       "lastError": null
     },
     "flipkart": {
       "failures": 0,
-      "lastSuccess": "2026-07-15T08:35:34.919Z",
+      "lastSuccess": "2026-07-15T08:38:18.169Z",
       "lastError": null
     },
     "croma": {
-      "failures": 0,
+      "failures": 1,
       "lastSuccess": "2026-07-15T08:36:16.058Z",
-      "lastError": null
+      "lastError": "The operation was aborted due to timeout"
     },
     "relianceDigital": {
       "failures": 0,
@@ -258,27 +258,27 @@
     },
     "vijaySales": {
       "failures": 0,
-      "lastSuccess": "2026-07-15T08:35:35.898Z",
+      "lastSuccess": "2026-07-15T08:38:19.201Z",
       "lastError": null
     },
     "shopatsc": {
       "failures": 0,
-      "lastSuccess": "2026-07-15T08:35:41.910Z",
+      "lastSuccess": "2026-07-15T08:38:20.031Z",
       "lastError": null
     },
     "bigbasket": {
       "failures": 0,
-      "lastSuccess": "2026-07-15T08:35:43.150Z",
+      "lastSuccess": "2026-07-15T08:38:21.581Z",
       "lastError": null
     },
     "blinkit": {
       "failures": 0,
-      "lastSuccess": "2026-07-15T08:35:43.816Z",
+      "lastSuccess": "2026-07-15T08:38:22.057Z",
       "lastError": null
     }
   },
   "filters": {
     "snapshot_view": "all"
   },
-  "lastRunAt": "2026-07-15T08:36:17.235Z"
+  "lastRunAt": "2026-07-15T08:38:59.470Z"
 }
