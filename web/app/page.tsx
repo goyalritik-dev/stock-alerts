@@ -428,13 +428,17 @@ export default function Dashboard() {
 
 function Snapshot({ state }: { state: TrackerState }) {
     const [expanded, setExpanded] = useState(false);
+    const [filters, setFilters] = useState(state.filters ?? { snapshot_view: "_in_stock" });
+
     const products = Object.entries(state.products ?? {}).sort(
         ([, a], [, b]) => Number(b.inStock) - Number(a.inStock)
     );
-    const inStockCount = products.filter(([, p]) => p.inStock).length;
+    const inStockProducts = products.filter(([, p]) => p.inStock);
+    const inStockCount = inStockProducts.length;
     const unhealthySites = Object.entries(state.sites ?? {}).filter(([, s]) => s.failures >= 3);
     const COLLAPSED_LIMIT = 8;
-    const visible = expanded ? products : products.slice(0, COLLAPSED_LIMIT);
+    const displayProducts = filters.snapshot_view === "all" ? products : inStockProducts;
+    const visible = expanded ? displayProducts : displayProducts.slice(0, COLLAPSED_LIMIT);
 
     return (
         <section className="mb-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6">
@@ -456,6 +460,31 @@ function Snapshot({ state }: { state: TrackerState }) {
                         last run {new Date(state.lastRunAt).toLocaleString("en-IN")}
                     </span>
                 )}
+            </div>
+
+            <div className="flex justify-end mt-3 gap-3">
+                <span
+                    className={`block truncate text-sm text-zinc-200 ${
+                        filters.snapshot_view === "all" ? "text-zinc-200" : "text-zinc-700"
+                    }`}
+                >
+                    All Products
+                </span>
+
+                <Toggle
+                    checked={filters.snapshot_view === "in_stock"}
+                    onChange={(on) =>
+                        setFilters((p) => ({ ...p, snapshot_view: on ? "in_stock" : "all" }))
+                    }
+                />
+
+                <span
+                    className={`block truncate text-sm text-zinc-200 ${
+                        filters.snapshot_view === "in_stock" ? "text-zinc-200" : "text-zinc-700"
+                    }`}
+                >
+                    In Stock
+                </span>
             </div>
 
             {unhealthySites.length > 0 && (
@@ -505,8 +534,11 @@ function Snapshot({ state }: { state: TrackerState }) {
                         No products tracked yet — the worker hasn&apos;t run.
                     </li>
                 )}
+                {inStockProducts.length === 0 && (
+                    <li className="text-sm text-zinc-500">No products found in stock</li>
+                )}
             </ul>
-            {products.length > COLLAPSED_LIMIT && (
+            {displayProducts.length > COLLAPSED_LIMIT && (
                 <button
                     onClick={() => setExpanded(!expanded)}
                     className="mt-3 w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2 text-xs text-zinc-400 transition hover:bg-zinc-900 hover:text-zinc-200"

@@ -278,7 +278,7 @@
         }
     },
     "filters": {
-        "snapshot_view": "in_stock"
+        "snapshot_view": "all"
     },
     "lastRunAt": "2026-07-15T05:57:40.177Z"
 }
