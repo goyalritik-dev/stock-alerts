@@ -2,7 +2,7 @@ name: Stock check
 
 on:
   schedule:
-    - cron: "*/5 * * * *" # GitHub may delay this under load; it's best-effort
+    - cron: "*/10 * * * *" # GitHub may delay this under load; it's best-effort
   workflow_dispatch: {}
 
 # Never let two checks run at once (they'd race on the state.json

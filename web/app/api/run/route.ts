@@ -22,8 +22,8 @@ export async function POST() {
     const gh = githubEnv();
     if (gh) {
         try {
-            console.log(`Dispatching GitHub Action check.yml run for repo: ${gh.repo}`);
-            const url = `https://api.github.com/repos/${gh.repo}/actions/workflows/check.yml/dispatches`;
+            console.log(`Dispatching GitHub Action stock-check.yml run for repo: ${gh.repo}`);
+            const url = `https://api.github.com/repos/${gh.repo}/actions/workflows/stock-check.yml/dispatches`;
             const res = await fetch(url, {
                 method: "POST",
                 headers: {
@@ -97,7 +97,7 @@ export async function GET() {
     if (gh) {
         try {
             // Check for in-progress runs
-            const urlProgress = `https://api.github.com/repos/${gh.repo}/actions/workflows/check.yml/runs?status=in_progress`;
+            const urlProgress = `https://api.github.com/repos/${gh.repo}/actions/workflows/stock-check.yml/runs?status=in_progress`;
             const res1 = await fetch(urlProgress, {
                 headers: {
                     Authorization: `Bearer ${gh.token}`,
@@ -115,7 +115,7 @@ export async function GET() {
 
             // Also check for queued runs
             if (!running) {
-                const urlQueued = `https://api.github.com/repos/${gh.repo}/actions/workflows/check.yml/runs?status=queued`;
+                const urlQueued = `https://api.github.com/repos/${gh.repo}/actions/workflows/stock-check.yml/runs?status=queued`;
                 const res2 = await fetch(urlQueued, {
                     headers: {
                         Authorization: `Bearer ${gh.token}`,
