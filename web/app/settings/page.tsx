@@ -232,9 +232,9 @@ export default function SettingsPage() {
                                 >
                                     <div className="flex items-center gap-3.5 min-w-0">
                                         {/* Brand Favicon Logo from Google CDN */}
-                                        <a 
-                                            href={metadata.url} 
-                                            target="_blank" 
+                                        <a
+                                            href={metadata.url}
+                                            target="_blank"
                                             rel="noopener noreferrer"
                                             className="relative flex-shrink-0 group"
                                             title={`Visit ${metadata.label}`}
@@ -244,24 +244,25 @@ export default function SettingsPage() {
                                                 className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 p-1 group-hover:border-zinc-700 transition"
                                                 alt=""
                                                 onError={(e) => {
-                                                    (e.target as HTMLElement).style.display = "none";
+                                                    (e.target as HTMLElement).style.display =
+                                                        "none";
                                                 }}
                                             />
                                         </a>
 
                                         <div className="min-w-0">
                                             <div className="flex items-center gap-1.5">
-                                                <a 
-                                                    href={metadata.url} 
-                                                    target="_blank" 
+                                                <a
+                                                    href={metadata.url}
+                                                    target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="text-sm font-medium text-zinc-200 hover:text-zinc-100 transition truncate hover:underline"
                                                 >
                                                     {metadata.label}
                                                 </a>
                                                 {isEnabled && siteState?.lastError && (
-                                                    <span 
-                                                        title={siteState.lastError} 
+                                                    <span
+                                                        title={siteState.lastError}
                                                         className="text-rose-400 hover:text-rose-300 cursor-help"
                                                     >
                                                         ⚠️
@@ -477,8 +478,18 @@ function Shell({
                 <header className="mb-8 flex flex-wrap items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                         <Link href="/" className="group flex items-center gap-2">
-                            <svg className="w-5 h-5 text-zinc-400 group-hover:text-zinc-200 transition" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                            <svg
+                                className="w-5 h-5 text-zinc-400 group-hover:text-zinc-200 transition"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15 19l-7-7 7-7"
+                                />
                             </svg>
                         </Link>
                         <div>

@@ -43,9 +43,23 @@ export default function Dashboard() {
                     className="p-2.5 rounded-xl border border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700/60 transition shadow-sm"
                     title="Settings"
                 >
-                    <svg className="w-5 h-5 animate-[spin_8s_linear_infinite] hover:animate-[spin_2s_linear_infinite]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <svg
+                        className="w-5 h-5 animate-[spin_8s_linear_infinite] hover:animate-[spin_2s_linear_infinite]"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                        />
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
                     </svg>
                 </Link>
             }
@@ -130,7 +144,7 @@ function Snapshot({ state, config }: { state: TrackerState; config: TrackerConfi
             </div>
 
             {/* Captured Status Pills on top of snapshot */}
-            <div className="mt-4 p-4 rounded-xl border border-zinc-850 bg-zinc-950/40">
+            <div className="mt-4 p-4 rounded-xl border border-zinc-800 bg-zinc-950/40">
                 <div className="flex flex-wrap items-center gap-3">
                     <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
                         Last Run Status:
@@ -232,7 +246,8 @@ function Snapshot({ state, config }: { state: TrackerState; config: TrackerConfi
                                     <span>{SITE_LABELS[siteKey as SiteKey] ?? siteKey}</span>
                                     <span>•</span>
                                     <span>
-                                        checked {new Date(p.lastChecked).toLocaleTimeString("en-IN")}
+                                        checked{" "}
+                                        {new Date(p.lastChecked).toLocaleTimeString("en-IN")}
                                     </span>
                                 </div>
                             </div>
