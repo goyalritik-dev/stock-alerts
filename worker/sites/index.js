@@ -14,7 +14,7 @@ export const adapters = {
     blinkit,
     croma,
     flipkart,
-    relianceDigital,
+    // relianceDigital,
     shopatsc,
     vijaySales,
 };

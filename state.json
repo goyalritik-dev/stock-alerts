@@ -1,281 +1,284 @@
 {
-  "products": {
-    "flipkart:GMCGHMTYZ8BUBMFB": {
-      "title": "SONY PlayStation 5 console 825 GB",
-      "url": "https://www.flipkart.com/sony-playstation-5-console-825-gb/p/itm62f0f8b3c0bfb?pid=GMCGHMTYZ8BUBMFB",
-      "price": 54990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T00:07:36.431Z",
-      "firstSeen": "2026-07-14T18:46:35.582Z",
-      "lastAlertAt": null
+    "products": {
+        "flipkart:GMCGHMTYZ8BUBMFB": {
+            "title": "SONY PlayStation 5 console 825 GB",
+            "url": "https://www.flipkart.com/sony-playstation-5-console-825-gb/p/itm62f0f8b3c0bfb?pid=GMCGHMTYZ8BUBMFB",
+            "price": 54990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T00:07:36.431Z",
+            "firstSeen": "2026-07-14T18:46:35.582Z",
+            "lastAlertAt": null
+        },
+        "flipkart:GMCHGNTCA92BWPTU": {
+            "title": "SONY PS5 Console Disc (Slim) CFI-2008A01X 1024 GB",
+            "url": "https://www.flipkart.com/sony-ps5-console-disc-slim-cfi-2008a01x-1024-gb/p/itm25992c11914d6?pid=GMCHGNTCA92BWPTU",
+            "price": 54990,
+            "inStock": false,
+            "lastChecked": "2026-07-14T20:25:16.985Z",
+            "firstSeen": "2026-07-14T18:46:35.582Z",
+            "lastAlertAt": null
+        },
+        "flipkart:GMCH6S3SBAPR7EFH": {
+            "title": "SONY PS5 Console Digital - Fortnite Bundle (Slim) 1 TB with Yes",
+            "url": "https://www.flipkart.com/sony-ps5-console-digital-fortnite-bundle-slim-1-tb-yes/p/itm1660d204e39f8?pid=GMCH6S3SBAPR7EFH",
+            "price": 44990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T00:07:36.432Z",
+            "firstSeen": "2026-07-14T18:46:35.582Z",
+            "lastAlertAt": null
+        },
+        "flipkart:GMCHGRYKDDGCUZJE": {
+            "title": "SONY PS5 Console Digital (Slim) CFI-2008B01 1024 GB",
+            "url": "https://www.flipkart.com/sony-ps5-console-digital-slim-cfi-2008b01-1024-gb/p/itmcabcf14108133?pid=GMCHGRYKDDGCUZJE",
+            "price": 49990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T00:07:36.432Z",
+            "firstSeen": "2026-07-14T18:46:35.582Z",
+            "lastAlertAt": null
+        },
+        "flipkart:GMCGVYQW8RRUFFHX": {
+            "title": "SONY PlayStation 5 console- Modern Warfare III 825 GB with Call of Duty",
+            "url": "https://www.flipkart.com/sony-playstation-5-console-modern-warfare-iii-825-gb-call-duty/p/itm0abb34c158d3d?pid=GMCGVYQW8RRUFFHX",
+            "price": 59390,
+            "inStock": false,
+            "lastChecked": "2026-07-15T00:07:36.432Z",
+            "firstSeen": "2026-07-14T18:46:35.582Z",
+            "lastAlertAt": null
+        },
+        "croma:305985": {
+            "title": "SONY PlayStation 5 Slim 1TB SSD Gaming Console (White)",
+            "url": "https://www.croma.com/sony-playstation-5-slim-1tb-ssd-gaming-console-white-/p/305985",
+            "price": 54990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T03:32:10.942Z",
+            "firstSeen": "2026-07-14T18:46:36.181Z",
+            "lastAlertAt": null
+        },
+        "croma:316841": {
+            "title": "SONY PlayStation 5 1TB SSD Digital Edition Slim Gaming Console (White)",
+            "url": "https://www.croma.com/sony-playstation-5-1tb-ssd-digital-edition-slim-gaming-console-white-/p/316841",
+            "price": 49990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T03:32:10.942Z",
+            "firstSeen": "2026-07-14T18:46:36.181Z",
+            "lastAlertAt": null
+        },
+        "croma:316950": {
+            "title": "SONY PlayStation 5 1TB SSD Digital Slim Gaming Console With COD (White)",
+            "url": "https://www.croma.com/sony-playstation-5-1tb-ssd-digital-slim-gaming-console-with-cod-white-/p/316950",
+            "price": 49990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T03:32:10.942Z",
+            "firstSeen": "2026-07-14T18:46:36.181Z",
+            "lastAlertAt": null
+        },
+        "croma:321320": {
+            "title": "SONY PlayStation 5 1TB SSD Standard Disc Gaming Console (White)",
+            "url": "https://www.croma.com/sony-playstation-5-1tb-ssd-standard-disc-gaming-console-white-/p/321320",
+            "price": 54990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T03:32:11.669Z",
+            "firstSeen": "2026-07-14T18:46:36.359Z",
+            "lastAlertAt": null
+        },
+        "croma:322190": {
+            "title": "SONY PlayStation 5 825 GB SSD Digital Edition Gaming Console (White)",
+            "url": "https://www.croma.com/sony-playstation-5-825-gb-ssd-digital-edition-gaming-console-white-/p/322190",
+            "price": 49990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T03:32:11.669Z",
+            "firstSeen": "2026-07-14T18:46:36.359Z",
+            "lastAlertAt": null
+        },
+        "relianceDigital:sony-playstation-5-digital-edition-console": {
+            "title": "Sony PlayStation 5 Digital Edition Console",
+            "url": "https://www.reliancedigital.in/product/sony-playstation-5-digital-edition-console/?utm_content=cGxheXN0YXRpb24gNSBjb25zb2xlOjo6MQ%253D%253D&utm_medium=search",
+            "price": 44990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T05:57:37.363Z",
+            "firstSeen": "2026-07-14T18:46:40.419Z",
+            "lastAlertAt": "2026-07-14T18:46:40.419Z"
+        },
+        "relianceDigital:sony-playstation-ps5-slim-console-luh1rv-7537998": {
+            "title": "Sony Playstation PS5 Slim Console",
+            "url": "https://www.reliancedigital.in/product/sony-playstation-ps5-slim-console-luh1rv-7537998/?utm_content=cGxheXN0YXRpb24gNSBjb25zb2xlOjo6Mg%253D%253D&utm_medium=search",
+            "price": 54990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T05:57:37.385Z",
+            "firstSeen": "2026-07-14T18:46:41.496Z",
+            "lastAlertAt": "2026-07-14T18:46:41.496Z"
+        },
+        "relianceDigital:sony-playstation-ps5-slim-digital-console-luh1rv-7537999": {
+            "title": "Sony Playstation PS5 Slim Digital Console",
+            "url": "https://www.reliancedigital.in/product/sony-playstation-ps5-slim-digital-console-luh1rv-7537999/?utm_content=cGxheXN0YXRpb24gNSBjb25zb2xlOjo6Mw%253D%253D&utm_medium=search",
+            "price": 49990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T05:57:37.419Z",
+            "firstSeen": "2026-07-14T18:46:42.591Z",
+            "lastAlertAt": "2026-07-14T18:46:42.591Z"
+        },
+        "relianceDigital:sony-ps5-standard-d-chassis-gaming-console-fc26-bundle-mia2lh-9604025": {
+            "title": "Sony PS5 Standard D Chassis Gaming Console FC26 Bundle",
+            "url": "https://www.reliancedigital.in/product/sony-ps5-standard-d-chassis-gaming-console-fc26-bundle-mia2lh-9604025/?utm_content=cHM1IGNvbnNvbGU6Ojo2&utm_medium=search",
+            "price": 54990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T03:32:20.981Z",
+            "firstSeen": "2026-07-14T18:46:42.642Z",
+            "lastAlertAt": null
+        },
+        "vijaySales:254871": {
+            "title": "Sony PS5® Disc Edition Console Video Game | Dual Sense Wireless Controller Bundle",
+            "url": "https://www.vijaysales.com/p/254871/sony-ps5r-disc-edition-console-video-game-dual-sense-wireless-controller-bundle",
+            "price": 58190,
+            "inStock": false,
+            "lastChecked": "2026-07-15T05:57:33.522Z",
+            "firstSeen": "2026-07-14T18:46:42.932Z",
+            "lastAlertAt": null
+        },
+        "vijaySales:254870": {
+            "title": "Sony PlayStation®5 Digital Edition Console Video Game | PS5® SLIM",
+            "url": "https://www.vijaysales.com/p/254870/sony-playstationr5-digital-edition-console-video-game-825gb-ps5r-slim",
+            "price": 49990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T05:57:37.634Z",
+            "firstSeen": "2026-07-14T18:46:43.280Z",
+            "lastAlertAt": null
+        },
+        "vijaySales:252606": {
+            "title": "Sony PlayStation®5 Disc SA E Edition Console Video Game | PS5® SLIM",
+            "url": "https://www.vijaysales.com/p/252606/sony-playstationr5-disc-sa-e-edition-console-video-game-ps5r-slim",
+            "price": 54990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T05:57:37.651Z",
+            "firstSeen": "2026-07-14T18:46:43.424Z",
+            "lastAlertAt": null
+        },
+        "vijaySales:235635": {
+            "title": "Sony PS5® Digital Edition Console Video Game | Fortnite Flowering Chaos Bundle",
+            "url": "https://www.vijaysales.com/p/235635/sony-playstation-5-slim-digital-edition-console-fortnite-cobalt-star-bundle",
+            "price": 49990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T05:57:37.652Z",
+            "firstSeen": "2026-07-14T18:46:43.424Z",
+            "lastAlertAt": null
+        },
+        "vijaySales:235634": {
+            "title": "Sony PS5® Disc Edition Console Video Game | Fortnite Flowering Chaos Bundle",
+            "url": "https://www.vijaysales.com/p/235634/sony-playstation-ps5-disc-fortnite-bundle-edition",
+            "price": 54990,
+            "inStock": false,
+            "lastChecked": "2026-07-15T05:57:37.652Z",
+            "firstSeen": "2026-07-14T18:46:43.424Z",
+            "lastAlertAt": null
+        },
+        "bigbasket:40329964": {
+            "title": "Sony PS5 Slim Digital Edition Console",
+            "url": "https://www.bigbasket.com/pd/40329964/sony-ps5-slim-digital-edition-console-1-n/",
+            "price": 44990,
+            "inStock": false,
+            "lastChecked": "2026-07-14T20:25:24.524Z",
+            "firstSeen": "2026-07-14T18:46:46.713Z",
+            "lastAlertAt": null
+        },
+        "flipkart:GMCH6S3SEBEHWBDW": {
+            "title": "SONY PS5 Console Disc - Fortnite Bundle (Slim) 1 TB with Yes",
+            "url": "https://www.flipkart.com/sony-ps5-console-disc-fortnite-bundle-slim-1-tb-yes/p/itma8f2dd1b539f1?pid=GMCH6S3SEBEHWBDW",
+            "price": 54990,
+            "inStock": false,
+            "lastChecked": "2026-07-14T20:40:35.461Z",
+            "firstSeen": "2026-07-14T19:37:06.645Z",
+            "lastAlertAt": null
+        },
+        "flipkart:GMCGHMSTRUKHBYSG": {
+            "title": "SONY PlayStation 5 console GoWR VCH bundle 825 GB with Yes",
+            "url": "https://www.flipkart.com/sony-playstation-5-console-gowr-vch-bundle-825-gb-yes/p/itm01fb765abae7a?pid=GMCGHMSTRUKHBYSG",
+            "price": 59390,
+            "inStock": false,
+            "lastChecked": "2026-07-14T19:37:06.645Z",
+            "firstSeen": "2026-07-14T19:37:06.645Z",
+            "lastAlertAt": null
+        },
+        "flipkart:GMCH8WUTFZKVZNJE": {
+            "title": "SONY PS5 Console Disc Slim PS5® Console CFI-2008A01 1 TB",
+            "url": "https://www.flipkart.com/sony-ps5-console-disc-slim-ps5-cfi-2008a01-1-tb/p/itmdb538afe986e8?pid=GMCH8WUTFZKVZNJE",
+            "price": 58190,
+            "inStock": false,
+            "lastChecked": "2026-07-14T20:40:35.461Z",
+            "firstSeen": "2026-07-14T19:37:06.645Z",
+            "lastAlertAt": null
+        },
+        "flipkart:GMCGQH7P5ARAZFKK": {
+            "title": "SONY PS5 Console COD MW2 VCH Bundle (CFI-1208A01R) 825GB SSD GB with Call of Duty WMII Game",
+            "url": "https://www.flipkart.com/sony-ps5-console-cod-mw2-vch-bundle-cfi-1208a01r-825gb-ssd-gb-call-duty-wmii-game/p/itm584eb43f54057?pid=GMCGQH7P5ARAZFKK",
+            "price": 56290,
+            "inStock": false,
+            "lastChecked": "2026-07-14T19:37:06.645Z",
+            "firstSeen": "2026-07-14T19:37:06.645Z",
+            "lastAlertAt": null
+        },
+        "amazon:B0DMWRT2M6": {
+            "title": "New World Horizontal Stand for PS5/PS5 Slim /PS5 Pro Disc & Digital Console, Desk Stand Anti-Slip Base Stand Accessories for PS5 all PS5 ( Ps5 console not Included)",
+            "url": "https://www.amazon.in/dp/B0DMWRT2M6",
+            "price": null,
+            "inStock": false,
+            "lastChecked": "2026-07-14T20:17:04.306Z",
+            "firstSeen": "2026-07-14T20:17:04.306Z",
+            "lastAlertAt": null
+        },
+        "flipkart:GMCGTMGPUPHNYQGH": {
+            "title": "SONY PlayStation 5 console- FC 24 825 GB with EA SPORTS FC 24 full game voucher",
+            "url": "https://www.flipkart.com/sony-playstation-5-console-fc-24-825-gb-ea-sports-full-game-voucher/p/itm7b9c4acf55675?pid=GMCGTMGPUPHNYQGH",
+            "price": 59390,
+            "inStock": false,
+            "lastChecked": "2026-07-15T00:07:36.432Z",
+            "firstSeen": "2026-07-15T00:07:36.432Z",
+            "lastAlertAt": null
+        }
     },
-    "flipkart:GMCHGNTCA92BWPTU": {
-      "title": "SONY PS5 Console Disc (Slim) CFI-2008A01X 1024 GB",
-      "url": "https://www.flipkart.com/sony-ps5-console-disc-slim-cfi-2008a01x-1024-gb/p/itm25992c11914d6?pid=GMCHGNTCA92BWPTU",
-      "price": 54990,
-      "inStock": false,
-      "lastChecked": "2026-07-14T20:25:16.985Z",
-      "firstSeen": "2026-07-14T18:46:35.582Z",
-      "lastAlertAt": null
+    "sites": {
+        "amazon": {
+            "failures": 4,
+            "lastSuccess": "2026-07-14T22:10:01.011Z",
+            "lastError": "[likely bot-blocking] GET https://www.amazon.in/s?k=playstation%205%20console -> 503"
+        },
+        "flipkart": {
+            "failures": 2,
+            "lastSuccess": "2026-07-15T00:07:06.428Z",
+            "lastError": "The operation was aborted due to timeout"
+        },
+        "croma": {
+            "failures": 1,
+            "lastSuccess": "2026-07-15T03:32:09.666Z",
+            "lastError": "The operation was aborted due to timeout"
+        },
+        "relianceDigital": {
+            "failures": 0,
+            "lastSuccess": "2026-07-15T05:57:37.342Z",
+            "lastError": null
+        },
+        "vijaySales": {
+            "failures": 0,
+            "lastSuccess": "2026-07-15T05:57:33.521Z",
+            "lastError": null
+        },
+        "shopatsc": {
+            "failures": 0,
+            "lastSuccess": "2026-07-15T05:57:40.176Z",
+            "lastError": null
+        },
+        "bigbasket": {
+            "failures": 0,
+            "lastSuccess": "2026-07-15T05:57:39.555Z",
+            "lastError": null
+        },
+        "blinkit": {
+            "failures": 6,
+            "lastSuccess": "2026-07-14T20:40:40.761Z",
+            "lastError": "[likely bot-blocking] Failed to get Blinkit auth_key: 403"
+        }
     },
-    "flipkart:GMCH6S3SBAPR7EFH": {
-      "title": "SONY PS5 Console Digital - Fortnite Bundle (Slim) 1 TB with Yes",
-      "url": "https://www.flipkart.com/sony-ps5-console-digital-fortnite-bundle-slim-1-tb-yes/p/itm1660d204e39f8?pid=GMCH6S3SBAPR7EFH",
-      "price": 44990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T00:07:36.432Z",
-      "firstSeen": "2026-07-14T18:46:35.582Z",
-      "lastAlertAt": null
+    "filters": {
+        "snapshot_view": "in_stock"
     },
-    "flipkart:GMCHGRYKDDGCUZJE": {
-      "title": "SONY PS5 Console Digital (Slim) CFI-2008B01 1024 GB",
-      "url": "https://www.flipkart.com/sony-ps5-console-digital-slim-cfi-2008b01-1024-gb/p/itmcabcf14108133?pid=GMCHGRYKDDGCUZJE",
-      "price": 49990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T00:07:36.432Z",
-      "firstSeen": "2026-07-14T18:46:35.582Z",
-      "lastAlertAt": null
-    },
-    "flipkart:GMCGVYQW8RRUFFHX": {
-      "title": "SONY PlayStation 5 console- Modern Warfare III 825 GB with Call of Duty",
-      "url": "https://www.flipkart.com/sony-playstation-5-console-modern-warfare-iii-825-gb-call-duty/p/itm0abb34c158d3d?pid=GMCGVYQW8RRUFFHX",
-      "price": 59390,
-      "inStock": false,
-      "lastChecked": "2026-07-15T00:07:36.432Z",
-      "firstSeen": "2026-07-14T18:46:35.582Z",
-      "lastAlertAt": null
-    },
-    "croma:305985": {
-      "title": "SONY PlayStation 5 Slim 1TB SSD Gaming Console (White)",
-      "url": "https://www.croma.com/sony-playstation-5-slim-1tb-ssd-gaming-console-white-/p/305985",
-      "price": 54990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T03:32:10.942Z",
-      "firstSeen": "2026-07-14T18:46:36.181Z",
-      "lastAlertAt": null
-    },
-    "croma:316841": {
-      "title": "SONY PlayStation 5 1TB SSD Digital Edition Slim Gaming Console (White)",
-      "url": "https://www.croma.com/sony-playstation-5-1tb-ssd-digital-edition-slim-gaming-console-white-/p/316841",
-      "price": 49990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T03:32:10.942Z",
-      "firstSeen": "2026-07-14T18:46:36.181Z",
-      "lastAlertAt": null
-    },
-    "croma:316950": {
-      "title": "SONY PlayStation 5 1TB SSD Digital Slim Gaming Console With COD (White)",
-      "url": "https://www.croma.com/sony-playstation-5-1tb-ssd-digital-slim-gaming-console-with-cod-white-/p/316950",
-      "price": 49990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T03:32:10.942Z",
-      "firstSeen": "2026-07-14T18:46:36.181Z",
-      "lastAlertAt": null
-    },
-    "croma:321320": {
-      "title": "SONY PlayStation 5 1TB SSD Standard Disc Gaming Console (White)",
-      "url": "https://www.croma.com/sony-playstation-5-1tb-ssd-standard-disc-gaming-console-white-/p/321320",
-      "price": 54990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T03:32:11.669Z",
-      "firstSeen": "2026-07-14T18:46:36.359Z",
-      "lastAlertAt": null
-    },
-    "croma:322190": {
-      "title": "SONY PlayStation 5 825 GB SSD Digital Edition Gaming Console (White)",
-      "url": "https://www.croma.com/sony-playstation-5-825-gb-ssd-digital-edition-gaming-console-white-/p/322190",
-      "price": 49990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T03:32:11.669Z",
-      "firstSeen": "2026-07-14T18:46:36.359Z",
-      "lastAlertAt": null
-    },
-    "relianceDigital:sony-playstation-5-digital-edition-console": {
-      "title": "Sony PlayStation 5 Digital Edition Console",
-      "url": "https://www.reliancedigital.in/product/sony-playstation-5-digital-edition-console/?utm_content=cGxheXN0YXRpb24gNSBjb25zb2xlOjo6MQ%253D%253D&utm_medium=search",
-      "price": 44990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T05:57:37.363Z",
-      "firstSeen": "2026-07-14T18:46:40.419Z",
-      "lastAlertAt": "2026-07-14T18:46:40.419Z"
-    },
-    "relianceDigital:sony-playstation-ps5-slim-console-luh1rv-7537998": {
-      "title": "Sony Playstation PS5 Slim Console",
-      "url": "https://www.reliancedigital.in/product/sony-playstation-ps5-slim-console-luh1rv-7537998/?utm_content=cGxheXN0YXRpb24gNSBjb25zb2xlOjo6Mg%253D%253D&utm_medium=search",
-      "price": 54990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T05:57:37.385Z",
-      "firstSeen": "2026-07-14T18:46:41.496Z",
-      "lastAlertAt": "2026-07-14T18:46:41.496Z"
-    },
-    "relianceDigital:sony-playstation-ps5-slim-digital-console-luh1rv-7537999": {
-      "title": "Sony Playstation PS5 Slim Digital Console",
-      "url": "https://www.reliancedigital.in/product/sony-playstation-ps5-slim-digital-console-luh1rv-7537999/?utm_content=cGxheXN0YXRpb24gNSBjb25zb2xlOjo6Mw%253D%253D&utm_medium=search",
-      "price": 49990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T05:57:37.419Z",
-      "firstSeen": "2026-07-14T18:46:42.591Z",
-      "lastAlertAt": "2026-07-14T18:46:42.591Z"
-    },
-    "relianceDigital:sony-ps5-standard-d-chassis-gaming-console-fc26-bundle-mia2lh-9604025": {
-      "title": "Sony PS5 Standard D Chassis Gaming Console FC26 Bundle",
-      "url": "https://www.reliancedigital.in/product/sony-ps5-standard-d-chassis-gaming-console-fc26-bundle-mia2lh-9604025/?utm_content=cHM1IGNvbnNvbGU6Ojo2&utm_medium=search",
-      "price": 54990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T03:32:20.981Z",
-      "firstSeen": "2026-07-14T18:46:42.642Z",
-      "lastAlertAt": null
-    },
-    "vijaySales:254871": {
-      "title": "Sony PS5® Disc Edition Console Video Game | Dual Sense Wireless Controller Bundle",
-      "url": "https://www.vijaysales.com/p/254871/sony-ps5r-disc-edition-console-video-game-dual-sense-wireless-controller-bundle",
-      "price": 58190,
-      "inStock": false,
-      "lastChecked": "2026-07-15T05:57:33.522Z",
-      "firstSeen": "2026-07-14T18:46:42.932Z",
-      "lastAlertAt": null
-    },
-    "vijaySales:254870": {
-      "title": "Sony PlayStation®5 Digital Edition Console Video Game | PS5® SLIM",
-      "url": "https://www.vijaysales.com/p/254870/sony-playstationr5-digital-edition-console-video-game-825gb-ps5r-slim",
-      "price": 49990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T05:57:37.634Z",
-      "firstSeen": "2026-07-14T18:46:43.280Z",
-      "lastAlertAt": null
-    },
-    "vijaySales:252606": {
-      "title": "Sony PlayStation®5 Disc SA E Edition Console Video Game | PS5® SLIM",
-      "url": "https://www.vijaysales.com/p/252606/sony-playstationr5-disc-sa-e-edition-console-video-game-ps5r-slim",
-      "price": 54990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T05:57:37.651Z",
-      "firstSeen": "2026-07-14T18:46:43.424Z",
-      "lastAlertAt": null
-    },
-    "vijaySales:235635": {
-      "title": "Sony PS5® Digital Edition Console Video Game | Fortnite Flowering Chaos Bundle",
-      "url": "https://www.vijaysales.com/p/235635/sony-playstation-5-slim-digital-edition-console-fortnite-cobalt-star-bundle",
-      "price": 49990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T05:57:37.652Z",
-      "firstSeen": "2026-07-14T18:46:43.424Z",
-      "lastAlertAt": null
-    },
-    "vijaySales:235634": {
-      "title": "Sony PS5® Disc Edition Console Video Game | Fortnite Flowering Chaos Bundle",
-      "url": "https://www.vijaysales.com/p/235634/sony-playstation-ps5-disc-fortnite-bundle-edition",
-      "price": 54990,
-      "inStock": false,
-      "lastChecked": "2026-07-15T05:57:37.652Z",
-      "firstSeen": "2026-07-14T18:46:43.424Z",
-      "lastAlertAt": null
-    },
-    "bigbasket:40329964": {
-      "title": "Sony PS5 Slim Digital Edition Console",
-      "url": "https://www.bigbasket.com/pd/40329964/sony-ps5-slim-digital-edition-console-1-n/",
-      "price": 44990,
-      "inStock": false,
-      "lastChecked": "2026-07-14T20:25:24.524Z",
-      "firstSeen": "2026-07-14T18:46:46.713Z",
-      "lastAlertAt": null
-    },
-    "flipkart:GMCH6S3SEBEHWBDW": {
-      "title": "SONY PS5 Console Disc - Fortnite Bundle (Slim) 1 TB with Yes",
-      "url": "https://www.flipkart.com/sony-ps5-console-disc-fortnite-bundle-slim-1-tb-yes/p/itma8f2dd1b539f1?pid=GMCH6S3SEBEHWBDW",
-      "price": 54990,
-      "inStock": false,
-      "lastChecked": "2026-07-14T20:40:35.461Z",
-      "firstSeen": "2026-07-14T19:37:06.645Z",
-      "lastAlertAt": null
-    },
-    "flipkart:GMCGHMSTRUKHBYSG": {
-      "title": "SONY PlayStation 5 console GoWR VCH bundle 825 GB with Yes",
-      "url": "https://www.flipkart.com/sony-playstation-5-console-gowr-vch-bundle-825-gb-yes/p/itm01fb765abae7a?pid=GMCGHMSTRUKHBYSG",
-      "price": 59390,
-      "inStock": false,
-      "lastChecked": "2026-07-14T19:37:06.645Z",
-      "firstSeen": "2026-07-14T19:37:06.645Z",
-      "lastAlertAt": null
-    },
-    "flipkart:GMCH8WUTFZKVZNJE": {
-      "title": "SONY PS5 Console Disc Slim PS5® Console CFI-2008A01 1 TB",
-      "url": "https://www.flipkart.com/sony-ps5-console-disc-slim-ps5-cfi-2008a01-1-tb/p/itmdb538afe986e8?pid=GMCH8WUTFZKVZNJE",
-      "price": 58190,
-      "inStock": false,
-      "lastChecked": "2026-07-14T20:40:35.461Z",
-      "firstSeen": "2026-07-14T19:37:06.645Z",
-      "lastAlertAt": null
-    },
-    "flipkart:GMCGQH7P5ARAZFKK": {
-      "title": "SONY PS5 Console COD MW2 VCH Bundle (CFI-1208A01R) 825GB SSD GB with Call of Duty WMII Game",
-      "url": "https://www.flipkart.com/sony-ps5-console-cod-mw2-vch-bundle-cfi-1208a01r-825gb-ssd-gb-call-duty-wmii-game/p/itm584eb43f54057?pid=GMCGQH7P5ARAZFKK",
-      "price": 56290,
-      "inStock": false,
-      "lastChecked": "2026-07-14T19:37:06.645Z",
-      "firstSeen": "2026-07-14T19:37:06.645Z",
-      "lastAlertAt": null
-    },
-    "amazon:B0DMWRT2M6": {
-      "title": "New World Horizontal Stand for PS5/PS5 Slim /PS5 Pro Disc & Digital Console, Desk Stand Anti-Slip Base Stand Accessories for PS5 all PS5 ( Ps5 console not Included)",
-      "url": "https://www.amazon.in/dp/B0DMWRT2M6",
-      "price": null,
-      "inStock": false,
-      "lastChecked": "2026-07-14T20:17:04.306Z",
-      "firstSeen": "2026-07-14T20:17:04.306Z",
-      "lastAlertAt": null
-    },
-    "flipkart:GMCGTMGPUPHNYQGH": {
-      "title": "SONY PlayStation 5 console- FC 24 825 GB with EA SPORTS FC 24 full game voucher",
-      "url": "https://www.flipkart.com/sony-playstation-5-console-fc-24-825-gb-ea-sports-full-game-voucher/p/itm7b9c4acf55675?pid=GMCGTMGPUPHNYQGH",
-      "price": 59390,
-      "inStock": false,
-      "lastChecked": "2026-07-15T00:07:36.432Z",
-      "firstSeen": "2026-07-15T00:07:36.432Z",
-      "lastAlertAt": null
-    }
-  },
-  "sites": {
-    "amazon": {
-      "failures": 4,
-      "lastSuccess": "2026-07-14T22:10:01.011Z",
-      "lastError": "[likely bot-blocking] GET https://www.amazon.in/s?k=playstation%205%20console -> 503"
-    },
-    "flipkart": {
-      "failures": 2,
-      "lastSuccess": "2026-07-15T00:07:06.428Z",
-      "lastError": "The operation was aborted due to timeout"
-    },
-    "croma": {
-      "failures": 1,
-      "lastSuccess": "2026-07-15T03:32:09.666Z",
-      "lastError": "The operation was aborted due to timeout"
-    },
-    "relianceDigital": {
-      "failures": 0,
-      "lastSuccess": "2026-07-15T05:57:37.342Z",
-      "lastError": null
-    },
-    "vijaySales": {
-      "failures": 0,
-      "lastSuccess": "2026-07-15T05:57:33.521Z",
-      "lastError": null
-    },
-    "shopatsc": {
-      "failures": 0,
-      "lastSuccess": "2026-07-15T05:57:40.176Z",
-      "lastError": null
-    },
-    "bigbasket": {
-      "failures": 0,
-      "lastSuccess": "2026-07-15T05:57:39.555Z",
-      "lastError": null
-    },
-    "blinkit": {
-      "failures": 6,
-      "lastSuccess": "2026-07-14T20:40:40.761Z",
-      "lastError": "[likely bot-blocking] Failed to get Blinkit auth_key: 403"
-    }
-  },
-  "lastRunAt": "2026-07-15T05:57:40.177Z"
+    "lastRunAt": "2026-07-15T05:57:40.177Z"
 }

@@ -49,6 +49,9 @@ export interface TrackerConfig {
 
 export interface TrackerState {
     lastRunAt?: string;
+    filters?: {
+        snapshot_view: string;
+    };
     products: Record<
         string,
         {
