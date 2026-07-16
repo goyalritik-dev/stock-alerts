@@ -50,7 +50,7 @@
       "url": "https://www.croma.com/sony-playstation-5-slim-1tb-ssd-gaming-console-white-/p/305985",
       "price": 54990,
       "inStock": false,
-      "lastChecked": "2026-07-16T18:44:43.949Z",
+      "lastChecked": "2026-07-16T19:47:58.786Z",
       "firstSeen": "2026-07-14T18:46:36.181Z",
       "lastAlertAt": null
     },
@@ -59,7 +59,7 @@
       "url": "https://www.croma.com/sony-playstation-5-1tb-ssd-digital-edition-slim-gaming-console-white-/p/316841",
       "price": 49990,
       "inStock": false,
-      "lastChecked": "2026-07-16T18:44:43.950Z",
+      "lastChecked": "2026-07-16T19:47:58.786Z",
       "firstSeen": "2026-07-14T18:46:36.181Z",
       "lastAlertAt": null
     },
@@ -68,7 +68,7 @@
       "url": "https://www.croma.com/sony-playstation-5-1tb-ssd-digital-slim-gaming-console-with-cod-white-/p/316950",
       "price": 49990,
       "inStock": false,
-      "lastChecked": "2026-07-16T18:44:43.949Z",
+      "lastChecked": "2026-07-16T19:47:58.786Z",
       "firstSeen": "2026-07-14T18:46:36.181Z",
       "lastAlertAt": null
     },
@@ -77,7 +77,7 @@
       "url": "https://www.croma.com/sony-playstation-5-1tb-ssd-standard-disc-gaming-console-white-/p/321320",
       "price": 54990,
       "inStock": false,
-      "lastChecked": "2026-07-16T18:44:43.950Z",
+      "lastChecked": "2026-07-16T19:47:58.787Z",
       "firstSeen": "2026-07-14T18:46:36.359Z",
       "lastAlertAt": null
     },
@@ -86,7 +86,7 @@
       "url": "https://www.croma.com/sony-playstation-5-825-gb-ssd-digital-edition-gaming-console-white-/p/322190",
       "price": 49990,
       "inStock": false,
-      "lastChecked": "2026-07-16T18:44:43.950Z",
+      "lastChecked": "2026-07-16T19:47:58.787Z",
       "firstSeen": "2026-07-14T18:46:36.359Z",
       "lastAlertAt": null
     },
@@ -140,7 +140,7 @@
       "url": "https://www.vijaysales.com/p/254870/sony-playstationr5-digital-edition-console-video-game-825gb-ps5r-slim",
       "price": 49990,
       "inStock": false,
-      "lastChecked": "2026-07-16T18:44:50.341Z",
+      "lastChecked": "2026-07-16T19:47:59.576Z",
       "firstSeen": "2026-07-14T18:46:43.280Z",
       "lastAlertAt": null
     },
@@ -149,7 +149,7 @@
       "url": "https://www.vijaysales.com/p/252606/sony-playstationr5-disc-sa-e-edition-console-video-game-ps5r-slim",
       "price": 54990,
       "inStock": false,
-      "lastChecked": "2026-07-16T18:44:54.129Z",
+      "lastChecked": "2026-07-16T19:48:03.258Z",
       "firstSeen": "2026-07-14T18:46:43.424Z",
       "lastAlertAt": null
     },
@@ -238,17 +238,17 @@
   "sites": {
     "amazon": {
       "failures": 0,
-      "lastSuccess": "2026-07-16T18:44:43.049Z",
+      "lastSuccess": "2026-07-16T19:47:56.597Z",
       "lastError": null
     },
     "flipkart": {
-      "failures": 0,
+      "failures": 1,
       "lastSuccess": "2026-07-16T18:44:43.901Z",
-      "lastError": null
+      "lastError": "[likely bot-blocking] GET https://www.flipkart.com/search?q=playstation%205%20console -> 403"
     },
     "croma": {
       "failures": 0,
-      "lastSuccess": "2026-07-16T18:44:43.552Z",
+      "lastSuccess": "2026-07-16T19:47:57.802Z",
       "lastError": null
     },
     "relianceDigital": {
@@ -258,21 +258,21 @@
     },
     "vijaySales": {
       "failures": 0,
-      "lastSuccess": "2026-07-16T18:44:44.709Z",
+      "lastSuccess": "2026-07-16T19:47:59.351Z",
       "lastError": null
     },
     "shopatsc": {
       "failures": 0,
-      "lastSuccess": "2026-07-16T18:44:56.692Z",
+      "lastSuccess": "2026-07-16T19:48:03.321Z",
       "lastError": null
     },
     "bigbasket": {
       "failures": 0,
-      "lastSuccess": "2026-07-16T18:44:58.423Z",
+      "lastSuccess": "2026-07-16T19:48:04.568Z",
       "lastError": null
     },
     "blinkit": {
-      "failures": 20,
+      "failures": 21,
       "lastSuccess": "2026-07-15T10:27:19.939Z",
       "lastError": "[likely bot-blocking] [likely bot-blocking] Failed to fetch Blinkit landing page: 403"
     }
@@ -280,5 +280,5 @@
   "filters": {
     "snapshot_view": "all"
   },
-  "lastRunAt": "2026-07-16T18:45:13.907Z"
+  "lastRunAt": "2026-07-16T19:48:04.568Z"
 }
