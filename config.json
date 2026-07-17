@@ -50,7 +50,7 @@
   },
   "notifications": {
     "telegram": {
-      "enabled": false,
+      "enabled": true,
       "phone": "+918077254081"
     },
     "whatsapp": {
