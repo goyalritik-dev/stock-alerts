@@ -12,7 +12,10 @@ import { getChromeHeaders } from "../lib/http.js";
  */
 const BASE = "https://www.amazon.in";
 
-const impit = new Impit({ browser: "chrome" });
+const impit = new Impit({
+    browser: "chrome",
+    ...(process.env.SCRAPER_PROXY ? { proxyUrl: process.env.SCRAPER_PROXY } : {}),
+});
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 

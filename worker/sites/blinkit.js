@@ -13,7 +13,10 @@ import { getChromeHeaders } from "../lib/http.js";
  * This version scrapes it from the web app at runtime.
  */
 
-const impit = new Impit({ browser: "chrome" });
+const impit = new Impit({
+    browser: "chrome",
+    ...(process.env.SCRAPER_PROXY ? { proxyUrl: process.env.SCRAPER_PROXY } : {}),
+});
 
 // Fresh identifiers per worker run to avoid fingerprint staleness.
 const DEVICE_ID = randomBytes(8).toString("hex"); // 16-char hex, like Android device IDs

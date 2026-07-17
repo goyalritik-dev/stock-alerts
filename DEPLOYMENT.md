@@ -75,6 +75,13 @@ This will trigger the workflow precisely every 5 minutes using the GitHub Action
    - `CALLMEBOT_PHONE`: Your phone number including country code (e.g. `+919876543210`).
    - `CALLMEBOT_APIKEY`: The API key sent by CallMeBot.
 
+### Bypassing Bot Blocking with Proxies (Recommended for GitHub Actions)
+If you run the worker on GitHub Actions, major retailers like Amazon, Flipkart, and Blinkit may block requests with `503` or `403` errors because of datacenter IP reputation. To solve this, you can configure a proxy:
+1. **Get a Proxy**: Register with a proxy provider (residential proxy networks work best).
+2. **Add the Secret**:
+   - `SCRAPER_PROXY`: Your proxy connection URL (e.g., `http://username:password@proxy_host:port`).
+This will automatically route all standard fetch requests and Impit (TLS-fingerprinted) requests through your proxy.
+
 ---
 
 ## 4. How it Works

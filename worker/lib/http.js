@@ -8,6 +8,13 @@
  *     "site is blocking us" instead of treating it as infrastructure
  */
 
+import { setGlobalDispatcher, ProxyAgent } from "undici";
+
+if (process.env.SCRAPER_PROXY) {
+    console.log(`[http] Configuring global fetch proxy: ${process.env.SCRAPER_PROXY}`);
+    setGlobalDispatcher(new ProxyAgent(process.env.SCRAPER_PROXY));
+}
+
 // Shared rotating Chrome user agents and header generator for scraper modules.
 export const CHROME_USER_AGENTS = [
     {
