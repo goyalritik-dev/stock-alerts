@@ -16,6 +16,7 @@ export function expectedToken(): string | null {
 export function verifyPassword(password: string): boolean {
     const expected = expectedToken();
     if (!expected) return true;
+
     const given = Buffer.from(hash(password));
     const want = Buffer.from(expected);
     return given.length === want.length && timingSafeEqual(given, want);
