@@ -101,8 +101,8 @@ export interface TrackerConfig {
         };
     };
     notifications: {
-        telegram: { enabled: boolean };
-        whatsapp: { enabled: boolean };
+        telegram: { enabled: boolean; phone: string };
+        whatsapp: { enabled: boolean; phone: string };
         sms: { enabled: boolean; phone: string };
     };
 }

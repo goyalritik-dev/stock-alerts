@@ -31,10 +31,12 @@
     },
     "notifications": {
         "telegram": {
-            "enabled": true
+            "enabled": true,
+            "phone": "+918077254081"
         },
         "whatsapp": {
-            "enabled": false
+            "enabled": false,
+            "phone": "+918077254081"
         },
         "sms": {
             "enabled": false,

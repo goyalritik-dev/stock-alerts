@@ -414,43 +414,73 @@ export default function SettingsPage() {
                         title="Notifications"
                         description="Bot tokens and API keys live in environment secrets, never in this config."
                     >
-                        <div className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3">
-                            <div>
-                                <p className="text-sm text-zinc-200">Telegram</p>
-                                <p className="text-xs text-zinc-500">
-                                    Instant push via your Telegram bot
-                                </p>
+                        <div className="rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm text-zinc-200">Telegram</p>
+                                    <p className="text-xs text-zinc-500">
+                                        Instant push via your Telegram bot
+                                    </p>
+                                </div>
+                                <Toggle
+                                    checked={config.notifications.telegram.enabled}
+                                    onChange={(enabled) =>
+                                        setConfig({
+                                            ...config,
+                                            notifications: {
+                                                ...config.notifications,
+                                                telegram: {
+                                                    ...config.notifications.telegram,
+                                                    enabled,
+                                                },
+                                            },
+                                        })
+                                    }
+                                />
                             </div>
-                            <Toggle
-                                checked={config.notifications.telegram.enabled}
-                                onChange={(enabled) =>
-                                    setConfig({
-                                        ...config,
-                                        notifications: {
-                                            ...config.notifications,
-                                            telegram: { enabled },
-                                        },
-                                    })
-                                }
-                            />
+                            {config.notifications.telegram.enabled && (
+                                <div className="mt-3 flex items-center gap-2 border-t border-zinc-800 pt-3">
+                                    <span className="text-xs text-zinc-500">
+                                        Alerts will be sent to
+                                    </span>
+                                    <span className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 text-xs font-mono text-zinc-200">
+                                        {config.notifications.telegram?.phone ?? "+918077254081"}
+                                    </span>
+                                </div>
+                            )}
                         </div>
-                        <div className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3">
-                            <div>
-                                <p className="text-sm text-zinc-200">WhatsApp</p>
-                                <p className="text-xs text-zinc-500">Via CallMeBot personal API</p>
+                        <div className="rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm text-zinc-200">WhatsApp</p>
+                                    <p className="text-xs text-zinc-500">Via CallMeBot personal API</p>
+                                </div>
+                                <Toggle
+                                    checked={config.notifications.whatsapp.enabled}
+                                    onChange={(enabled) =>
+                                        setConfig({
+                                            ...config,
+                                            notifications: {
+                                                ...config.notifications,
+                                                whatsapp: {
+                                                    ...config.notifications.whatsapp,
+                                                    enabled,
+                                                },
+                                            },
+                                        })
+                                    }
+                                />
                             </div>
-                            <Toggle
-                                checked={config.notifications.whatsapp.enabled}
-                                onChange={(enabled) =>
-                                    setConfig({
-                                        ...config,
-                                        notifications: {
-                                            ...config.notifications,
-                                            whatsapp: { enabled },
-                                        },
-                                    })
-                                }
-                            />
+                            {config.notifications.whatsapp.enabled && (
+                                <div className="mt-3 flex items-center gap-2 border-t border-zinc-800 pt-3">
+                                    <span className="text-xs text-zinc-500">
+                                        Alerts will be sent to
+                                    </span>
+                                    <span className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 text-xs font-mono text-zinc-200">
+                                        {config.notifications.whatsapp?.phone ?? "+918077254081"}
+                                    </span>
+                                </div>
+                            )}
                         </div>
 
                         {/* SMS Twilio Section */}
