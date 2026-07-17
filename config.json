@@ -9,7 +9,10 @@
       "ps5 disc",
       "ps5 digital"
     ],
-    "includeKeywords": [],
+    "includeKeywords": [
+      "console",
+      "playstation 5"
+    ],
     "excludeKeywords": [
       "cover",
       "skin",
