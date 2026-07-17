@@ -1,5 +1,6 @@
 import * as cheerio from "cheerio";
 import { Impit } from "impit";
+import { getChromeHeaders } from "../lib/http.js";
 
 /**
  * Amazon.in — parses the search results HTML. Amazon serves CAPTCHAs to
@@ -20,27 +21,6 @@ function humanDelay() {
     return sleep(1000 + Math.random() * 2000);
 }
 
-/** Full browser-like headers that match a real Chrome session. */
-function browserHeaders(referer = BASE + "/") {
-    return {
-        "user-agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-        accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-        "accept-language": "en-IN,en-GB;q=0.9,en-US;q=0.8,en;q=0.7",
-        "accept-encoding": "gzip, deflate, br, zstd",
-        "cache-control": "max-age=0",
-        "sec-ch-ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"Windows"',
-        "sec-fetch-dest": "document",
-        "sec-fetch-mode": "navigate",
-        "sec-fetch-site": "same-origin",
-        "sec-fetch-user": "?1",
-        "upgrade-insecure-requests": "1",
-        referer,
-    };
-}
-
 /** Fetch a page via impit with retries on CAPTCHA/transient errors. */
 async function fetchPage(url, { referer, retries = 2 } = {}) {
     let lastError;
@@ -51,7 +31,7 @@ async function fetchPage(url, { referer, retries = 2 } = {}) {
         }
         try {
             const res = await impit.fetch(url, {
-                headers: browserHeaders(referer),
+                headers: getChromeHeaders(referer),
                 redirect: "follow",
             });
             if (!res.ok) {
@@ -121,7 +101,7 @@ export default {
             try {
                 const res = await impit.fetch(product.url, {
                     headers: {
-                        ...browserHeaders(`${BASE}/s?k=ps5+console`),
+                        ...getChromeHeaders(`${BASE}/s?k=ps5+console`),
                         cookie: `session-token=dummy; ubid-acbin=dummy; x-acbin="${pin}"`,
                     },
                     redirect: "follow",
@@ -137,7 +117,8 @@ export default {
                 }
                 // Look for delivery-related indicators
                 const hasDeliveryPromise = /deliver(y|ed|ing)\s+(to|by)/i.test(html);
-                const unavailable = /currently unavailable|out of stock|temporarily out of stock/i.test(html);
+                const unavailable =
+                    /currently unavailable|out of stock|temporarily out of stock/i.test(html);
                 const hasAddToCart = /id="add-to-cart-button"/.test(html);
 
                 // If the product has add-to-cart and delivery info, it's serviceable

@@ -8,6 +8,61 @@
  *     "site is blocking us" instead of treating it as infrastructure
  */
 
+// Shared rotating Chrome user agents and header generator for scraper modules.
+export const CHROME_USER_AGENTS = [
+    {
+        ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        ch: '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+        platform: '"Windows"',
+    },
+    {
+        ua: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        ch: '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+        platform: '"macOS"',
+    },
+    {
+        ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+        ch: '"Google Chrome";v="130", "Chromium";v="130", "Not_A Brand";v="99"',
+        platform: '"Windows"',
+    },
+    {
+        ua: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+        ch: '"Google Chrome";v="130", "Chromium";v="130", "Not_A Brand";v="99"',
+        platform: '"macOS"',
+    },
+];
+
+let chromeUaIndex = Math.floor(Math.random() * CHROME_USER_AGENTS.length);
+
+export function getChromeHeaders(referer = null) {
+    const selected = CHROME_USER_AGENTS[chromeUaIndex];
+    chromeUaIndex = (chromeUaIndex + 1) % CHROME_USER_AGENTS.length;
+
+    const headers = {
+        "User-Agent": selected.ua,
+        "sec-ch-ua": selected.ch,
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": selected.platform,
+        Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+        "Accept-Language": "en-IN,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
+    };
+
+    if (referer) {
+        headers["Referer"] = referer;
+        const isRoot = referer.endsWith("/") && referer.split("/").length <= 4;
+        headers["sec-fetch-site"] = isRoot ? "none" : "same-origin";
+        headers["sec-fetch-dest"] = "document";
+        headers["sec-fetch-mode"] = "navigate";
+        headers["sec-fetch-user"] = "?1";
+        headers["Cache-Control"] = "max-age=0";
+    }
+
+    return headers;
+}
+
 const USER_AGENTS = [
     // Chrome / macOS
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
@@ -31,12 +86,31 @@ function nextUserAgent() {
 }
 
 function baseHeaders() {
-    return {
-        "User-Agent": nextUserAgent(),
-        Accept:
-            "text/html,application/xhtml+xml,application/xml;q=0.9,application/json;q=0.8,*/*;q=0.7",
+    const ua = nextUserAgent();
+    const headers = {
+        "User-Agent": ua,
+        Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
         "Accept-Language": "en-IN,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
     };
+
+    if (ua.includes("Chrome/126")) {
+        headers["sec-ch-ua"] = '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"';
+        headers["sec-ch-ua-mobile"] = "?0";
+        headers["sec-ch-ua-platform"] = ua.includes("Macintosh") ? '"macOS"' : '"Windows"';
+    } else if (ua.includes("Edg/126")) {
+        headers["sec-ch-ua"] = '"Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"';
+        headers["sec-ch-ua-mobile"] = "?0";
+        headers["sec-ch-ua-platform"] = '"Windows"';
+    }
+
+    return headers;
 }
 
 /** HTTP statuses that indicate blocking / rate limiting rather than a broken site. */

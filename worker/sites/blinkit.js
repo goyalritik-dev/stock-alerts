@@ -1,6 +1,7 @@
 import { Impit } from "impit";
 import { randomUUID, randomBytes } from "crypto";
 import { latLongForPincode } from "../lib/pincode.js";
+import { getChromeHeaders } from "../lib/http.js";
 
 /**
  * Blinkit — hyperlocal quick-commerce. All requests go via their
@@ -23,14 +24,7 @@ let authKeyCache = null;
 
 /** Browser-like headers for Blinkit web requests. */
 function chromeHeaders() {
-    return {
-        "user-agent":
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-        "accept-language": "en-IN,en;q=0.9",
-        "sec-ch-ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"macOS"',
-    };
+    return getChromeHeaders();
 }
 
 /**
@@ -58,7 +52,9 @@ async function scrapeReqKey() {
     });
 
     if (!landingRes.ok) {
-        throw new Error(`[likely bot-blocking] Failed to fetch Blinkit landing page: ${landingRes.status}`);
+        throw new Error(
+            `[likely bot-blocking] Failed to fetch Blinkit landing page: ${landingRes.status}`
+        );
     }
 
     const landingHtml = await landingRes.text();
@@ -85,13 +81,15 @@ async function scrapeReqKey() {
 
     // 3. Fallback: scan JS bundles for the req_key
     console.warn("[blinkit] requestKey not found inline — scanning JS bundles...");
-    const scriptMatches = [
-        ...landingHtml.matchAll(/src=["']([^"']*?\.js[^"']*?)["']/gi),
-    ];
-    const bundleUrls = [...new Set(scriptMatches.map((m) => {
-        const url = m[1];
-        return url.startsWith("http") ? url : `https://blinkit.com${url}`;
-    }))].filter((u) => !u.includes("gtm.js") && !u.includes("googletagmanager")); // skip analytics
+    const scriptMatches = [...landingHtml.matchAll(/src=["']([^"']*?\.js[^"']*?)["']/gi)];
+    const bundleUrls = [
+        ...new Set(
+            scriptMatches.map((m) => {
+                const url = m[1];
+                return url.startsWith("http") ? url : `https://blinkit.com${url}`;
+            })
+        ),
+    ].filter((u) => !u.includes("gtm.js") && !u.includes("googletagmanager")); // skip analytics
 
     for (const bundleUrl of bundleUrls.slice(0, 8)) {
         try {
@@ -122,9 +120,7 @@ async function scrapeReqKey() {
     }
 
     // 4. Last resort fallback
-    console.warn(
-        "[blinkit] Could not scrape req_key anywhere. Using fallback — may be stale."
-    );
+    console.warn("[blinkit] Could not scrape req_key anywhere. Using fallback — may be stale.");
     cachedReqKey = "c0e6868e-1180-400c-be51-f473479f1f0a";
     return cachedReqKey;
 }
@@ -158,7 +154,9 @@ async function getAuthKey() {
         });
 
         if (res.status === 403 && attempt === 1) {
-            console.warn("[blinkit] auth_key returned 403 — clearing req_key cache and retrying...");
+            console.warn(
+                "[blinkit] auth_key returned 403 — clearing req_key cache and retrying..."
+            );
             cachedReqKey = null; // force re-scrape
             continue;
         }
