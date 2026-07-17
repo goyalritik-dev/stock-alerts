@@ -2,12 +2,14 @@
   "search": {
     "queries": [
       "ps5 console",
-      "playstation 5 console"
+      "playstation 5 console",
+      "playstation 5",
+      "playstation 5 disc",
+      "playstation 5 disc edition",
+      "ps5 disc",
+      "ps5 digital"
     ],
-    "includeKeywords": [
-      "playstation 5|ps5",
-      "console"
-    ],
+    "includeKeywords": [],
     "excludeKeywords": [
       "cover",
       "skin",
@@ -15,7 +17,7 @@
       "faceplate",
       "camera"
     ],
-    "maxResultsPerSite": 5
+    "maxResultsPerSite": 10
   },
   "price": {
     "min": 35000,
@@ -23,7 +25,9 @@
   },
   "pincodes": [
     "400072",
-    "400001"
+    "400001",
+    "282005",
+    "282004"
   ],
   "sites": {
     "amazon": true,
@@ -36,8 +40,8 @@
     "blinkit": true
   },
   "schedule": {
-    "intervalMinutes": 5,
-    "realertCooldownMinutes": 60,
+    "intervalMinutes": 10,
+    "realertCooldownMinutes": 57,
     "quietHours": {
       "enabled": false,
       "start": "00:00",
@@ -46,7 +50,7 @@
   },
   "notifications": {
     "telegram": {
-      "enabled": true,
+      "enabled": false,
       "phone": "+918077254081"
     },
     "whatsapp": {
