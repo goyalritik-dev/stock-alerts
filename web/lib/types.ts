@@ -103,6 +103,7 @@ export interface TrackerConfig {
     notifications: {
         telegram: { enabled: boolean };
         whatsapp: { enabled: boolean };
+        sms: { enabled: boolean; phone: string };
     };
 }
 

@@ -452,6 +452,43 @@ export default function SettingsPage() {
                                 }
                             />
                         </div>
+
+                        {/* SMS Twilio Section */}
+                        <div className="rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm text-zinc-200">SMS (Twilio)</p>
+                                    <p className="text-xs text-zinc-500">
+                                        Send text messages on stock matches
+                                    </p>
+                                </div>
+                                <Toggle
+                                    checked={config.notifications.sms?.enabled ?? false}
+                                    onChange={(enabled) =>
+                                        setConfig({
+                                            ...config,
+                                            notifications: {
+                                                ...config.notifications,
+                                                sms: {
+                                                    ...config.notifications.sms,
+                                                    enabled,
+                                                },
+                                            },
+                                        })
+                                    }
+                                />
+                            </div>
+                            {(config.notifications.sms?.enabled ?? false) && (
+                                <div className="mt-3 flex items-center gap-2 border-t border-zinc-800 pt-3">
+                                    <span className="text-xs text-zinc-500">
+                                        Alerts will be sent to
+                                    </span>
+                                    <span className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 text-xs font-mono text-zinc-200">
+                                        {config.notifications.sms?.phone ?? "+918077254081"}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
                     </Section>
                 </div>
             </div>
