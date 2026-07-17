@@ -1,74 +1,74 @@
 name: Stock check
 
 on:
-  schedule:
-    - cron: "*/10 * * * *" # GitHub may delay this under load; it's best-effort
-  workflow_dispatch: {}
+    schedule:
+        - cron: "*/10 * * * *" # GitHub may delay this under load; it's best-effort
+    workflow_dispatch: {}
 
 # Never let two checks run at once (they'd race on the state.json
 # commit-back). A newer run waits for the current one; GitHub keeps at
 # most one queued, so a backlog can't build up.
 concurrency:
-  group: stock-check
-  cancel-in-progress: false
+    group: stock-check
+    cancel-in-progress: false
 
 permissions:
-  contents: write
+    contents: write
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    # Hard cap so a hung run can't burn Actions minutes. A normal run
-    # takes well under a minute; retries/backoff bound the worst case.
-    timeout-minutes: 8
+    check:
+        runs-on: ubuntu-latest
+        # Hard cap so a hung run can't burn Actions minutes. A normal run
+        # takes well under a minute; retries/backoff bound the worst case.
+        timeout-minutes: 8
 
-    steps:
-      - uses: actions/checkout@v4
+        steps:
+            - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: worker/package-lock.json
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: npm
+                  cache-dependency-path: worker/package-lock.json
 
-      - name: Install worker dependencies
-        working-directory: worker
-        run: npm ci
+            - name: Install worker dependencies
+              working-directory: worker
+              run: npm ci
 
-      # Exit code contract: the worker exits non-zero only for real
-      # infrastructure failures (bad config, unwritable state, crashes).
-      # Retailer sites blocking the runner's datacenter IP is expected
-      # and exits 0 — site health is tracked in state.json and the
-      # worker sends a Telegram warning after a sustained streak.
-      - name: Run stock check
-        working-directory: worker
-        timeout-minutes: 6
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
-          CALLMEBOT_APIKEY: ${{ secrets.CALLMEBOT_APIKEY }}
-          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
-          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
-          TWILIO_PHONE_NUMBER: ${{ secrets.TWILIO_PHONE_NUMBER }}
-          SCRAPER_PROXY: ${{ secrets.SCRAPER_PROXY }}
-        run: node index.js
+            # Exit code contract: the worker exits non-zero only for real
+            # infrastructure failures (bad config, unwritable state, crashes).
+            # Retailer sites blocking the runner's datacenter IP is expected
+            # and exits 0 — site health is tracked in state.json and the
+            # worker sends a Telegram warning after a sustained streak.
+            - name: Run stock check
+              working-directory: worker
+              timeout-minutes: 6
+              env:
+                  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+                  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+                  CALLMEBOT_PHONE: ${{ secrets.CALLMEBOT_PHONE }}
+                  CALLMEBOT_APIKEY: ${{ secrets.CALLMEBOT_APIKEY }}
+                  TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+                  TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+                  TWILIO_PHONE_NUMBER: ${{ secrets.TWILIO_PHONE_NUMBER }}
+                  SCRAPER_PROXY: ${{ secrets.SCRAPER_PROXY }}
+              run: node index.js
 
-      - name: Commit state back
-        run: |
-          if git diff --quiet state.json; then
-            echo "state.json unchanged — nothing to commit"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add state.json
-          git commit -m "chore: update tracker state [skip ci]"
-          # The dashboard may have pushed a config edit mid-run; rebase and
-          # retry a few times instead of failing the whole workflow.
-          for i in 1 2 3; do
-            if git push; then exit 0; fi
-            git pull --rebase
-          done
-          echo "could not push state after 3 attempts" >&2
-          exit 1
+            - name: Commit state back
+              run: |
+                  if git diff --quiet state.json; then
+                    echo "state.json unchanged — nothing to commit"
+                    exit 0
+                  fi
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add state.json
+                  git commit -m "chore: update tracker state [skip ci]"
+                  # The dashboard may have pushed a config edit mid-run; rebase and
+                  # retry a few times instead of failing the whole workflow.
+                  for i in 1 2 3; do
+                    if git push; then exit 0; fi
+                    git pull --rebase
+                  done
+                  echo "could not push state after 3 attempts" >&2
+                  exit 1
