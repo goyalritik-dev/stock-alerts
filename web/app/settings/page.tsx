@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useDashboard } from "@/lib/dashboard-context";
 import { Field, NumberInput, Section, TagInput, Toggle } from "@/components/ui";
@@ -18,6 +19,56 @@ export default function SettingsPage() {
         save,
         fetchConfig,
     } = useDashboard();
+
+    const [testStatus, setTestStatus] = useState<
+        Record<string, { loading: boolean; error: string | null; success: boolean }>
+    >({});
+
+    const handleTestNotification = async (type: "telegram" | "whatsapp" | "sms") => {
+        setTestStatus((prev) => ({
+            ...prev,
+            [type]: { loading: true, error: null, success: false },
+        }));
+        try {
+            const res = await fetch("/api/notifications/test", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ type }),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                setTestStatus((prev) => ({
+                    ...prev,
+                    [type]: {
+                        loading: false,
+                        error: data.error ?? "Failed to send test alert.",
+                        success: false,
+                    },
+                }));
+            } else {
+                setTestStatus((prev) => ({
+                    ...prev,
+                    [type]: { loading: false, error: null, success: true },
+                }));
+                // Reset success after 5 seconds
+                setTimeout(() => {
+                    setTestStatus((prev) => ({
+                        ...prev,
+                        [type]: { ...prev[type], success: false },
+                    }));
+                }, 5000);
+            }
+        } catch (err: any) {
+            setTestStatus((prev) => ({
+                ...prev,
+                [type]: {
+                    loading: false,
+                    error: err.message ?? "An error occurred.",
+                    success: false,
+                },
+            }));
+        }
+    };
 
     if (load.status === "loading") {
         return (
@@ -439,13 +490,38 @@ export default function SettingsPage() {
                                 />
                             </div>
                             {config.notifications.telegram.enabled && (
-                                <div className="mt-3 flex items-center gap-2 border-t border-zinc-800 pt-3">
-                                    <span className="text-xs text-zinc-500">
-                                        Alerts will be sent to
-                                    </span>
-                                    <span className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 text-xs font-mono text-zinc-200">
-                                        {config.notifications.telegram?.phone ?? "+918077254081"}
-                                    </span>
+                                <div className="mt-3 flex flex-col gap-2 border-t border-zinc-800 pt-3">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-xs text-zinc-500">
+                                                Alerts will be sent to
+                                            </span>
+                                            <span className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 text-xs font-mono text-zinc-200">
+                                                {config.notifications.telegram?.phone ??
+                                                    "+918077254081"}
+                                            </span>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            disabled={testStatus.telegram?.loading}
+                                            onClick={() => handleTestNotification("telegram")}
+                                            className="rounded-lg bg-zinc-800 hover:bg-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-300 border border-zinc-700 transition disabled:opacity-50 cursor-pointer"
+                                        >
+                                            {testStatus.telegram?.loading
+                                                ? "Testing..."
+                                                : "Test Channel"}
+                                        </button>
+                                    </div>
+                                    {testStatus.telegram?.success && (
+                                        <p className="text-[11px] text-emerald-400">
+                                            ✓ Test message sent successfully!
+                                        </p>
+                                    )}
+                                    {testStatus.telegram?.error && (
+                                        <p className="text-[11px] text-rose-400 bg-rose-500/10 border border-rose-500/20 p-2 rounded-lg leading-relaxed">
+                                            {testStatus.telegram.error}
+                                        </p>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -453,7 +529,9 @@ export default function SettingsPage() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-sm text-zinc-200">WhatsApp</p>
-                                    <p className="text-xs text-zinc-500">Via CallMeBot personal API</p>
+                                    <p className="text-xs text-zinc-500">
+                                        Via CallMeBot personal API
+                                    </p>
                                 </div>
                                 <Toggle
                                     checked={config.notifications.whatsapp.enabled}
@@ -472,13 +550,38 @@ export default function SettingsPage() {
                                 />
                             </div>
                             {config.notifications.whatsapp.enabled && (
-                                <div className="mt-3 flex items-center gap-2 border-t border-zinc-800 pt-3">
-                                    <span className="text-xs text-zinc-500">
-                                        Alerts will be sent to
-                                    </span>
-                                    <span className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 text-xs font-mono text-zinc-200">
-                                        {config.notifications.whatsapp?.phone ?? "+918077254081"}
-                                    </span>
+                                <div className="mt-3 flex flex-col gap-2 border-t border-zinc-800 pt-3">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-xs text-zinc-500">
+                                                Alerts will be sent to
+                                            </span>
+                                            <span className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 text-xs font-mono text-zinc-200">
+                                                {config.notifications.whatsapp?.phone ??
+                                                    "+918077254081"}
+                                            </span>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            disabled={testStatus.whatsapp?.loading}
+                                            onClick={() => handleTestNotification("whatsapp")}
+                                            className="rounded-lg bg-zinc-800 hover:bg-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-300 border border-zinc-700 transition disabled:opacity-50 cursor-pointer"
+                                        >
+                                            {testStatus.whatsapp?.loading
+                                                ? "Testing..."
+                                                : "Test Channel"}
+                                        </button>
+                                    </div>
+                                    {testStatus.whatsapp?.success && (
+                                        <p className="text-[11px] text-emerald-400">
+                                            ✓ Test message sent successfully!
+                                        </p>
+                                    )}
+                                    {testStatus.whatsapp?.error && (
+                                        <p className="text-[11px] text-rose-400 bg-rose-500/10 border border-rose-500/20 p-2 rounded-lg leading-relaxed">
+                                            {testStatus.whatsapp.error}
+                                        </p>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -509,13 +612,37 @@ export default function SettingsPage() {
                                 />
                             </div>
                             {(config.notifications.sms?.enabled ?? false) && (
-                                <div className="mt-3 flex items-center gap-2 border-t border-zinc-800 pt-3">
-                                    <span className="text-xs text-zinc-500">
-                                        Alerts will be sent to
-                                    </span>
-                                    <span className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 text-xs font-mono text-zinc-200">
-                                        {config.notifications.sms?.phone ?? "+918077254081"}
-                                    </span>
+                                <div className="mt-3 flex flex-col gap-2 border-t border-zinc-800 pt-3">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-xs text-zinc-500">
+                                                Alerts will be sent to
+                                            </span>
+                                            <span className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 text-xs font-mono text-zinc-200">
+                                                {config.notifications.sms?.phone ?? "+918077254081"}
+                                            </span>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            disabled={testStatus.sms?.loading}
+                                            onClick={() => handleTestNotification("sms")}
+                                            className="rounded-lg bg-zinc-800 hover:bg-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-300 border border-zinc-700 transition disabled:opacity-50 cursor-pointer"
+                                        >
+                                            {testStatus.sms?.loading
+                                                ? "Testing..."
+                                                : "Test Channel"}
+                                        </button>
+                                    </div>
+                                    {testStatus.sms?.success && (
+                                        <p className="text-[11px] text-emerald-400">
+                                            ✓ Test message sent successfully!
+                                        </p>
+                                    )}
+                                    {testStatus.sms?.error && (
+                                        <p className="text-[11px] text-rose-400 bg-rose-500/10 border border-rose-500/20 p-2 rounded-lg leading-relaxed">
+                                            {testStatus.sms.error}
+                                        </p>
+                                    )}
                                 </div>
                             )}
                         </div>
