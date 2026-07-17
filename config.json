@@ -50,6 +50,15 @@
     },
     "whatsapp": {
       "enabled": false
+    },
+    "sms": {
+      "enabled": false,
+      "numbers": [
+        {
+          "phone": "+918077254081",
+          "verified": true
+        }
+      ]
     }
   }
 }
