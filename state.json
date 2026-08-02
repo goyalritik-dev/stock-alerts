@@ -651,19 +651,19 @@
   },
   "sites": {
     "amazon": {
-      "failures": 0,
+      "failures": 1,
       "lastSuccess": "2026-08-02T09:51:52.879Z",
-      "lastError": null
+      "lastError": "Proxy rejected the CONNECT tunnel with status code 402."
     },
     "flipkart": {
-      "failures": 1,
+      "failures": 2,
       "lastSuccess": "2026-08-02T07:51:55.032Z",
-      "lastError": "[likely bot-blocking] GET https://www.flipkart.com/search?q=ps5%20digital -> 403"
+      "lastError": "fetch failed"
     },
     "croma": {
-      "failures": 0,
+      "failures": 1,
       "lastSuccess": "2026-08-02T09:51:54.108Z",
-      "lastError": null
+      "lastError": "fetch failed"
     },
     "relianceDigital": {
       "failures": 0,
@@ -671,28 +671,28 @@
       "lastError": null
     },
     "vijaySales": {
-      "failures": 0,
+      "failures": 1,
       "lastSuccess": "2026-08-02T09:51:56.803Z",
-      "lastError": null
+      "lastError": "fetch failed"
     },
     "shopatsc": {
-      "failures": 45,
+      "failures": 46,
       "lastSuccess": "2026-07-30T05:28:02.310Z",
-      "lastError": "[likely bot-blocking] GET https://www.shopatsc.com/products.json?limit=250&page=1 -> 429"
+      "lastError": "fetch failed"
     },
     "bigbasket": {
-      "failures": 0,
+      "failures": 1,
       "lastSuccess": "2026-08-02T09:52:14.173Z",
-      "lastError": null
+      "lastError": "fetch failed"
     },
     "blinkit": {
-      "failures": 0,
+      "failures": 1,
       "lastSuccess": "2026-08-02T09:52:14.422Z",
-      "lastError": null
+      "lastError": "Proxy rejected the CONNECT tunnel with status code 402."
     }
   },
   "filters": {
     "snapshot_view": "all"
   },
-  "lastRunAt": "2026-08-02T09:52:14.422Z"
+  "lastRunAt": "2026-08-02T11:13:41.218Z"
 }
