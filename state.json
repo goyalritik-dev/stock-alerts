@@ -651,17 +651,17 @@
   },
   "sites": {
     "amazon": {
-      "failures": 10,
+      "failures": 11,
       "lastSuccess": "2026-08-02T09:51:52.879Z",
       "lastError": "Proxy rejected the CONNECT tunnel with status code 402."
     },
     "flipkart": {
-      "failures": 11,
+      "failures": 12,
       "lastSuccess": "2026-08-02T07:51:55.032Z",
       "lastError": "fetch failed"
     },
     "croma": {
-      "failures": 10,
+      "failures": 11,
       "lastSuccess": "2026-08-02T09:51:54.108Z",
       "lastError": "fetch failed"
     },
@@ -671,28 +671,28 @@
       "lastError": null
     },
     "vijaySales": {
-      "failures": 10,
+      "failures": 11,
       "lastSuccess": "2026-08-02T09:51:56.803Z",
       "lastError": "fetch failed"
     },
     "shopatsc": {
-      "failures": 55,
+      "failures": 56,
       "lastSuccess": "2026-07-30T05:28:02.310Z",
       "lastError": "fetch failed"
     },
     "bigbasket": {
-      "failures": 10,
+      "failures": 11,
       "lastSuccess": "2026-08-02T09:52:14.173Z",
       "lastError": "fetch failed"
     },
     "blinkit": {
-      "failures": 10,
+      "failures": 11,
       "lastSuccess": "2026-08-02T09:52:14.422Z",
-      "lastError": "Request timeout (30000 ms) exceeded."
+      "lastError": "Proxy rejected the CONNECT tunnel with status code 402."
     }
   },
   "filters": {
     "snapshot_view": "all"
   },
-  "lastRunAt": "2026-08-02T21:32:03.167Z"
+  "lastRunAt": "2026-08-02T22:33:38.731Z"
 }
