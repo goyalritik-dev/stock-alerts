@@ -651,17 +651,17 @@
   },
   "sites": {
     "amazon": {
-      "failures": 121,
+      "failures": 122,
       "lastSuccess": "2026-08-02T09:51:52.879Z",
       "lastError": "Proxy rejected the CONNECT tunnel with status code 402."
     },
     "flipkart": {
-      "failures": 122,
+      "failures": 123,
       "lastSuccess": "2026-08-02T07:51:55.032Z",
       "lastError": "fetch failed"
     },
     "croma": {
-      "failures": 121,
+      "failures": 122,
       "lastSuccess": "2026-08-02T09:51:54.108Z",
       "lastError": "fetch failed"
     },
@@ -671,22 +671,22 @@
       "lastError": null
     },
     "vijaySales": {
-      "failures": 121,
+      "failures": 122,
       "lastSuccess": "2026-08-02T09:51:56.803Z",
       "lastError": "fetch failed"
     },
     "shopatsc": {
-      "failures": 166,
+      "failures": 167,
       "lastSuccess": "2026-07-30T05:28:02.310Z",
       "lastError": "fetch failed"
     },
     "bigbasket": {
-      "failures": 121,
+      "failures": 122,
       "lastSuccess": "2026-08-02T09:52:14.173Z",
       "lastError": "fetch failed"
     },
     "blinkit": {
-      "failures": 121,
+      "failures": 122,
       "lastSuccess": "2026-08-02T09:52:14.422Z",
       "lastError": "Request timeout (30000 ms) exceeded."
     }
@@ -694,5 +694,5 @@
   "filters": {
     "snapshot_view": "all"
   },
-  "lastRunAt": "2026-08-09T09:25:42.485Z"
+  "lastRunAt": "2026-08-09T10:04:56.386Z"
 }
