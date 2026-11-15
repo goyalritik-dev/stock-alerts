@@ -1002,17 +1002,17 @@
   },
   "sites": {
     "amazon": {
-      "failures": 208,
+      "failures": 209,
       "lastSuccess": "2026-10-04T15:51:30.367Z",
       "lastError": "Proxy authentication required."
     },
     "flipkart": {
-      "failures": 208,
+      "failures": 209,
       "lastSuccess": "2026-10-04T15:51:30.647Z",
       "lastError": "fetch failed"
     },
     "croma": {
-      "failures": 208,
+      "failures": 209,
       "lastSuccess": "2026-10-04T15:52:13.926Z",
       "lastError": "fetch failed"
     },
@@ -1022,22 +1022,22 @@
       "lastError": null
     },
     "vijaySales": {
-      "failures": 208,
+      "failures": 209,
       "lastSuccess": "2026-10-04T15:52:21.955Z",
       "lastError": "fetch failed"
     },
     "shopatsc": {
-      "failures": 208,
+      "failures": 209,
       "lastSuccess": "2026-10-04T15:52:29.636Z",
       "lastError": "fetch failed"
     },
     "bigbasket": {
-      "failures": 717,
+      "failures": 718,
       "lastSuccess": "2026-08-19T21:56:37.418Z",
       "lastError": "fetch failed"
     },
     "blinkit": {
-      "failures": 717,
+      "failures": 718,
       "lastSuccess": "2026-08-19T21:56:39.448Z",
       "lastError": "Proxy authentication required."
     }
@@ -1045,5 +1045,5 @@
   "filters": {
     "snapshot_view": "all"
   },
-  "lastRunAt": "2026-11-15T17:15:58.316Z"
+  "lastRunAt": "2026-11-15T21:52:05.605Z"
 }
